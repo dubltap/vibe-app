@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VibeCurate - Coming Soon | dubltap.io</title>
+  <meta name="description" content="AI-powered playlist curation across platforms. Find your perfect soundtrack and share the vibe.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{--sunset-gold:#F4A261;--sunset-coral:#E76F51;--ocean-deep:#264653;--ocean-teal:#2A9D8F;--sand-light:#FDF8F3;--sand-dark:#4A4238}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--sand-light),#fff);color:var(--sand-dark);text-align:center;padding:2rem}
+    .container{max-width:600px}
+    .logo{font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:700;color:var(--ocean-deep);margin-bottom:3rem}
+    .logo span{color:var(--sunset-gold)}
+    .icon{font-size:5rem;margin-bottom:1.5rem}
+    h1{font-family:'Outfit',sans-serif;font-size:3rem;font-weight:800;color:var(--ocean-deep);margin-bottom:1rem}
+    h1 span{background:linear-gradient(135deg,var(--sunset-gold),var(--sunset-coral));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .tagline{font-size:1.25rem;color:var(--sand-dark);margin-bottom:2rem;line-height:1.6}
+    .email-form{display:flex;gap:0.75rem;max-width:400px;margin:0 auto 1.5rem}
+    .email-form input{flex:1;padding:1rem 1.25rem;border:2px solid #e0d6cc;border-radius:12px;font-size:1rem;outline:none;transition:border-color 0.2s}
+    .email-form input:focus{border-color:var(--ocean-teal)}
+    .email-form button{padding:1rem 1.5rem;background:linear-gradient(135deg,var(--sunset-gold),var(--sunset-coral));color:var(--ocean-deep);border:none;border-radius:12px;font-weight:600;cursor:pointer;transition:all 0.2s}
+    .email-form button:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(244,162,97,0.4)}
+    .note{font-size:0.875rem;color:#999;margin-bottom:3rem}
+    .back-link{color:var(--ocean-teal);text-decoration:none;font-weight:500}
+    .back-link:hover{color:var(--sunset-coral)}
+    @media(max-width:480px){h1{font-size:2rem}.email-form{flex-direction:column}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">dubltap<span>.</span>io</div>
+    <div class="icon">🎵</div>
+    <h1><span>VibeCurate</span></h1>
+    <p class="tagline">AI-powered playlist curation across platforms. Find your perfect soundtrack and share the vibe. Coming soon.</p>
+    <form class="email-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+      <input type="email" name="email" placeholder="your@email.com" required>
+      <input type="hidden" name="source" value="vibe.dubltap.io">
+      <button type="submit">Notify Me</button>
+    </form>
+    <p class="note">Be first to know when we launch. No spam.</p>
+    <a href="https://dubltap.io" class="back-link">← Back to all apps</a>
+  </div>
+</body>
+</html>
