@@ -897,236 +897,6 @@
       font-weight: 700;
     }
     
-    /* ═══ Inline Player ═══ */
-    .player-section {
-      display: none;
-      margin-bottom: var(--phi-lg);
-      background: rgba(255,255,255,0.9);
-      border: 1px solid rgba(196, 183, 166, 0.3);
-      border-radius: 18px;
-      overflow: hidden;
-      animation: fadeUp 0.4s ease-out;
-    }
-    
-    .player-section.active { display: block; }
-    
-    .player-main {
-      display: flex;
-      align-items: center;
-      gap: var(--phi-md);
-      padding: var(--phi-md);
-    }
-    
-    .player-art {
-      width: 100px;
-      height: 100px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, var(--ocean-deep), #1a1a2e);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      overflow: hidden;
-    }
-    .player-art img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .player-art-icon { font-size: 2.4rem; opacity: 0.5; }
-    
-    .player-body { flex: 1; min-width: 0; }
-    
-    .player-progress-wrap {
-      width: 100%;
-      height: 4px;
-      background: rgba(196, 183, 166, 0.3);
-      border-radius: 2px;
-      margin-top: 8px;
-      cursor: pointer;
-      overflow: hidden;
-    }
-    .player-progress-bar {
-      height: 100%;
-      background: linear-gradient(90deg, var(--purple-vibe), var(--sunset-coral));
-      border-radius: 2px;
-      width: 0%;
-      transition: width 0.25s linear;
-    }
-    .player-time-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.62rem;
-      color: var(--sand-medium);
-      margin-top: 2px;
-    }
-    
-    .player-links {
-      display: flex;
-      gap: 6px;
-      margin-top: 6px;
-      flex-wrap: wrap;
-    }
-    .player-links a {
-      font-size: 0.65rem;
-      color: var(--sand-medium);
-      text-decoration: none;
-      padding: 1px 8px;
-      border: 1px solid rgba(196,183,166,0.3);
-      border-radius: 10px;
-      transition: all 0.2s;
-    }
-    .player-links a:hover {
-      color: var(--ocean-deep);
-      border-color: var(--ocean-teal);
-    }
-    .player-preview-label {
-      font-size: 0.58rem;
-      color: var(--sand-medium);
-      opacity: 0.6;
-      margin-top: 3px;
-    }
-    
-    .player-track-info {
-      flex: 1;
-      min-width: 0;
-    }
-    
-    .player-track-name {
-      font-family: var(--font-display);
-      font-weight: 700;
-      font-size: 0.9rem;
-      color: var(--ocean-deep);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    
-    .player-track-artist {
-      font-size: 0.78rem;
-      color: var(--sand-medium);
-    }
-    
-    .player-track-counter {
-      font-size: 0.7rem;
-      color: var(--purple-light);
-      font-weight: 600;
-      margin-top: 1px;
-    }
-    
-    .player-controls {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .player-ctrl {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      border: 1.5px solid var(--ocean-foam);
-      background: white;
-      color: var(--ocean-deep);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1rem;
-      transition: all 0.2s ease;
-    }
-    
-    .player-ctrl:hover {
-      background: var(--purple-glow);
-      border-color: var(--purple-vibe);
-      color: var(--purple-vibe);
-    }
-    
-    .player-ctrl.main {
-      width: 46px;
-      height: 46px;
-      background: linear-gradient(135deg, var(--purple-vibe), var(--sunset-coral));
-      border: none;
-      color: white;
-      font-size: 1.2rem;
-      box-shadow: 0 3px 12px rgba(124, 58, 237, 0.3);
-    }
-    
-    .player-ctrl.main:hover {
-      transform: scale(1.06);
-      box-shadow: 0 5px 18px rgba(124, 58, 237, 0.4);
-      color: white;
-      background: linear-gradient(135deg, var(--purple-vibe), var(--sunset-coral));
-    }
-    
-    .player-loading-msg {
-      text-align: center;
-      padding: 8px;
-      font-size: 0.78rem;
-      color: var(--purple-light);
-      font-weight: 500;
-    }
-    
-    /* Song card active/playing states */
-    .song-card.now-playing {
-      border-color: var(--purple-vibe);
-      background: rgba(124, 58, 237, 0.06);
-      box-shadow: 0 0 0 1px var(--purple-light), 0 4px 16px rgba(124, 58, 237, 0.1);
-    }
-    
-    .song-card.now-playing .song-number {
-      background: var(--purple-vibe);
-      color: white;
-    }
-    
-    .song-card .song-play-inline {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      border: none;
-      background: var(--purple-glow);
-      color: var(--purple-vibe);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.85rem;
-      transition: all 0.2s ease;
-      flex-shrink: 0;
-    }
-    
-    .song-card .song-play-inline:hover {
-      background: var(--purple-vibe);
-      color: white;
-      transform: scale(1.1);
-    }
-    
-    .song-card.now-playing .song-play-inline {
-      background: var(--purple-vibe);
-      color: white;
-    }
-    
-    /* Download button variant */
-    .btn-download {
-      background: rgba(42, 157, 143, 0.08);
-      color: var(--ocean-teal);
-      border: 1.5px solid var(--ocean-teal);
-    }
-    .btn-download:hover {
-      background: var(--ocean-teal);
-      color: white;
-    }
-    
-    .btn-play-all {
-      background: linear-gradient(135deg, var(--purple-vibe), var(--sunset-coral));
-      color: white;
-      border: none;
-      box-shadow: 0 2px 10px rgba(124, 58, 237, 0.25);
-    }
-    .btn-play-all:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 16px rgba(124, 58, 237, 0.35);
-    }
-
     /* ═══ Footer ═══ */
     .footer {
       position: relative;
@@ -1189,18 +959,6 @@
       
       .pricing-options {
         grid-template-columns: 1fr;
-      }
-      
-      .player-main {
-        flex-direction: column;
-        text-align: center;
-      }
-      .player-art {
-        width: 80px;
-        height: 80px;
-      }
-      .player-controls {
-        justify-content: center;
       }
       
       .header-actions .btn span {
@@ -1300,14 +1058,6 @@
           <div class="playlist-mood" id="playlistMood"></div>
         </div>
         <div class="playlist-actions">
-          <button class="btn btn-play-all" onclick="playAll()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            Play All
-          </button>
-          <button class="btn btn-download" onclick="downloadPlaylist()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Download
-          </button>
           <button class="btn btn-outline" onclick="sharePlaylist()">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
             Share
@@ -1317,36 +1067,6 @@
           </button>
         </div>
       </div>
-      <!-- Inline Player -->
-      <div class="player-section" id="playerSection">
-        <div class="player-main">
-          <div class="player-art" id="playerArt">
-            <div class="player-art-icon">🎧</div>
-          </div>
-          <div class="player-body">
-            <div class="player-track-name" id="playerTrackName">Press Play All to start</div>
-            <div class="player-track-artist" id="playerTrackArtist"></div>
-            <div class="player-track-counter" id="playerCounter"></div>
-            <div class="player-progress-wrap" onclick="seekAudio(event)">
-              <div class="player-progress-bar" id="playerProgressBar"></div>
-            </div>
-            <div class="player-time-row">
-              <span id="playerTimeNow">0:00</span>
-              <span id="playerTimeDur">0:30</span>
-            </div>
-            <div class="player-controls">
-              <button class="player-ctrl" onclick="playerPrev()" title="Previous">⏮</button>
-              <button class="player-ctrl main" onclick="playerToggle()" id="playerPlayBtn" title="Play/Pause">▶</button>
-              <button class="player-ctrl" onclick="playerNext()" title="Next">⏭</button>
-            </div>
-            <div class="player-links" id="playerLinks"></div>
-            <div class="player-preview-label">30s preview · Click links for full track</div>
-          </div>
-        </div>
-        <div class="player-loading-msg" id="playerLoading" style="display:none"></div>
-        <audio id="audioPlayer" preload="auto"></audio>
-      </div>
-      
       <ul class="song-list" id="songList"></ul>
       
       <!-- Cross-sell -->
@@ -1433,7 +1153,7 @@
   const EMAIL_GATE_AFTER = 2; // Prompt email after 2nd playlist
   
   // ═══ Stripe Price IDs ═══
-  // UPDATE THESE with your actual Stripe price IDs from dashboard
+  // Stripe price IDs (LIVE mode verified Feb 2026)
   const STRIPE_PRICES = {
     monthly: 'price_1SwZuDBkYqg7J4R72M7HXfLg',
     annual: 'price_1SwZveBkYqg7J4R7pUhnhc5b'
@@ -1448,13 +1168,6 @@
   let history = [];
   let currentPlaylist = null;
   let isGenerating = false;
-  
-  // ═══ Player State ═══
-  let playerCurrentIndex = -1;
-  let playerIsPlaying = false;
-  let audioEl = null;
-  let deezerCache = {};
-  let progressInterval = null;
   
   // ═══ Initialize ═══
   function init() {
@@ -1519,10 +1232,6 @@
   function showHistory() {
     document.getElementById('homeView').style.display = 'none';
     document.getElementById('historyView').classList.add('active');
-    // Pause player if switching to history
-    if (audioEl) {
-      try { audioEl.pause(); } catch(e) {}
-    }
     renderHistory();
   }
   
@@ -1577,9 +1286,6 @@
     document.getElementById('generateBtn').disabled = true;
     document.getElementById('loadingState').classList.add('active');
     document.getElementById('playlistContainer').classList.remove('active');
-    document.getElementById('playerSection').classList.remove('active');
-    // Stop any current playback
-    stopAudioPlayer();
     
     try {
       const response = await fetch(`${API_BASE}/api/ai-query`, {
@@ -1609,7 +1315,7 @@
           } else {
             // Try parsing the whole result
             const parsed = JSON.parse(text);
-            songs = Array.isArray(parsed) ? parsed : parsed.playlist || parsed.songs || [];
+            songs = Array.isArray(parsed) ? parsed : parsed.tracks || parsed.playlist || parsed.songs || [];
           }
         } catch {
           // Fallback: generate from text lines
@@ -1655,7 +1361,7 @@
     const lines = text.split('\n').filter(l => l.trim());
     const songs = [];
     for (const line of lines) {
-      const match = line.match(/["']?(.+?)["']?\s*[-–—by]+\s*(.+)/i);
+      const match = line.match(/["']?(.+?)["']?\s*[-——by]+\s*(.+)/i);
       if (match) {
         songs.push({
           title: match[1].replace(/^\d+[\.\)]\s*/, '').trim(),
@@ -1727,14 +1433,9 @@
     document.getElementById('playlistTitle').textContent = capitalizeWords(prompt);
     document.getElementById('playlistMood').textContent = '🎧 ' + songs.length + ' tracks curated';
     
-    // Show player section
-    document.getElementById('playerSection').classList.add('active');
-    resetPlayer();
-    
     const list = document.getElementById('songList');
     list.innerHTML = songs.map((song, i) => `
-      <li class="song-card" id="songCard${i}" style="animation-delay: ${i * 0.06}s">
-        <button class="song-play-inline" onclick="playTrack(${i})" title="Play in player">▶</button>
+      <li class="song-card" style="animation-delay: ${i * 0.06}s">
         <div class="song-number">${i + 1}</div>
         <div class="song-info">
           <div class="song-title">${escapeHtml(song.title || 'Unknown')}</div>
@@ -1742,7 +1443,7 @@
           ${song.why ? `<div class="song-why">${escapeHtml(song.why)}</div>` : ''}
         </div>
         <div class="song-actions">
-          <button class="song-btn" onclick="searchYouTube('${escapeAttr(song.title)} ${escapeAttr(song.artist)}')" title="Search YouTube">🔗</button>
+          <button class="song-btn" onclick="searchYouTube('${escapeAttr(song.title)} ${escapeAttr(song.artist)}')" title="Play on YouTube">▶</button>
           <button class="song-btn" onclick="searchSpotify('${escapeAttr(song.title)} ${escapeAttr(song.artist)}')" title="Find on Spotify">🎵</button>
         </div>
       </li>
@@ -1774,340 +1475,6 @@
         alert('Playlist copied to clipboard!');
       });
     }
-  }
-  
-  
-  // ═══════════════════════════════════════════════════════════════
-  // PLAYER — Deezer Preview Audio Playback
-  // ═══════════════════════════════════════════════════════════════
-  
-  function stopAudioPlayer() {
-    if (audioEl) {
-      audioEl.pause();
-      audioEl.src = '';
-    }
-    if (progressInterval) {
-      clearInterval(progressInterval);
-      progressInterval = null;
-    }
-    playerIsPlaying = false;
-  }
-  
-  function resetPlayer() {
-    playerCurrentIndex = -1;
-    stopAudioPlayer();
-    document.getElementById('playerArt').innerHTML = '<div class="player-art-icon">🎧</div>';
-    document.getElementById('playerTrackName').textContent = 'Press Play All to start';
-    document.getElementById('playerTrackArtist').textContent = '';
-    document.getElementById('playerCounter').textContent = '';
-    document.getElementById('playerPlayBtn').innerHTML = '▶';
-    document.getElementById('playerProgressBar').style.width = '0%';
-    document.getElementById('playerTimeNow').textContent = '0:00';
-    document.getElementById('playerTimeDur').textContent = '0:30';
-    document.getElementById('playerLinks').innerHTML = '';
-    document.getElementById('playerLoading').style.display = 'none';
-    document.querySelectorAll('.song-card.now-playing').forEach(el => el.classList.remove('now-playing'));
-  }
-  
-  function playAll() {
-    if (!currentPlaylist || !currentPlaylist.songs.length) return;
-    playTrack(0);
-  }
-  
-  async function playTrack(index) {
-    if (!currentPlaylist || index < 0 || index >= currentPlaylist.songs.length) return;
-    
-    const song = currentPlaylist.songs[index];
-    playerCurrentIndex = index;
-    
-    // Update UI immediately
-    updatePlayerUI(song, index);
-    document.getElementById('playerLoading').style.display = 'block';
-    document.getElementById('playerLoading').textContent = `Finding "${song.title}"...`;
-    
-    // Resolve track via Deezer
-    const query = `${song.title} ${song.artist}`;
-    let trackData = deezerCache[query];
-    
-    if (!trackData) {
-      trackData = await resolveDeezerTrack(song.artist, song.title);
-      if (trackData) deezerCache[query] = trackData;
-    }
-    
-    document.getElementById('playerLoading').style.display = 'none';
-    
-    if (trackData && trackData.preview) {
-      loadAudioTrack(trackData, song);
-    } else {
-      // Fallback: no Deezer preview found
-      document.getElementById('playerArt').innerHTML = '<div class="player-art-icon">🔇</div>';
-      document.getElementById('playerLinks').innerHTML = `
-        <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(query)}" target="_blank">YouTube ↗</a>
-        <a href="https://open.spotify.com/search/${encodeURIComponent(query)}" target="_blank">Spotify ↗</a>
-      `;
-      // Auto-advance after 2 seconds if no preview available
-      setTimeout(() => {
-        if (playerCurrentIndex === index) playerNext();
-      }, 2000);
-    }
-    
-    // Scroll player into view
-    document.getElementById('playerSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
-  
-  function updatePlayerUI(song, index) {
-    const total = currentPlaylist.songs.length;
-    document.getElementById('playerTrackName').textContent = song.title;
-    document.getElementById('playerTrackArtist').textContent = song.artist;
-    document.getElementById('playerCounter').textContent = `Track ${index + 1} of ${total}`;
-    document.getElementById('playerProgressBar').style.width = '0%';
-    document.getElementById('playerTimeNow').textContent = '0:00';
-    
-    // Highlight current track in list
-    document.querySelectorAll('.song-card.now-playing').forEach(el => el.classList.remove('now-playing'));
-    const card = document.getElementById('songCard' + index);
-    if (card) {
-      card.classList.add('now-playing');
-      card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
-  }
-  
-  async function resolveDeezerTrack(artist, title) {
-    try {
-      const q = `${artist} ${title}`;
-      const data = await deezerJsonpSearch(q);
-      
-      if (data && data.data && data.data.length > 0) {
-        const track = data.data[0];
-        return {
-          preview: track.preview,
-          cover: track.album?.cover_medium || track.album?.cover_small || null,
-          coverBig: track.album?.cover_big || null,
-          deezerLink: track.link,
-          duration: track.duration,
-          deezerTitle: track.title,
-          deezerArtist: track.artist?.name
-        };
-      }
-      
-      return null;
-    } catch (e) {
-      console.warn('Deezer search failed:', e);
-      return null;
-    }
-  }
-  
-  function deezerJsonpSearch(query) {
-    return new Promise((resolve, reject) => {
-      const cbName = 'dzCb_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
-      const script = document.createElement('script');
-      let done = false;
-      
-      window[cbName] = function(data) {
-        if (done) return;
-        done = true;
-        delete window[cbName];
-        try { document.head.removeChild(script); } catch(e) {}
-        resolve(data);
-      };
-      
-      script.src = `https://api.deezer.com/search?q=${encodeURIComponent(query)}&limit=3&output=jsonp&callback=${cbName}`;
-      script.onerror = function() {
-        if (done) return;
-        done = true;
-        delete window[cbName];
-        try { document.head.removeChild(script); } catch(e) {}
-        reject(new Error('JSONP request failed'));
-      };
-      
-      document.head.appendChild(script);
-      
-      // Timeout after 8 seconds
-      setTimeout(() => {
-        if (!done) {
-          done = true;
-          delete window[cbName];
-          try { document.head.removeChild(script); } catch(e) {}
-          reject(new Error('JSONP timeout'));
-        }
-      }, 8000);
-    });
-  }
-  
-  function loadAudioTrack(trackData, song) {
-    // Stop current playback
-    stopAudioPlayer();
-    
-    // Set album art
-    if (trackData.cover) {
-      document.getElementById('playerArt').innerHTML = `<img src="${trackData.cover}" alt="Album art" onerror="this.parentNode.innerHTML='<div class=player-art-icon>🎵</div>'">`;
-    } else {
-      document.getElementById('playerArt').innerHTML = '<div class="player-art-icon">🎵</div>';
-    }
-    
-    // Set duration display
-    document.getElementById('playerTimeDur').textContent = '0:30';
-    
-    // Set links
-    const q = encodeURIComponent(`${song.title} ${song.artist}`);
-    let links = '';
-    links += `<a href="https://www.youtube.com/results?search_query=${q}" target="_blank">YouTube ↗</a>`;
-    links += `<a href="https://open.spotify.com/search/${q}" target="_blank">Spotify ↗</a>`;
-    if (trackData.deezerLink) {
-      links += `<a href="${trackData.deezerLink}" target="_blank">Deezer ↗</a>`;
-    }
-    document.getElementById('playerLinks').innerHTML = links;
-    
-    // Load and play audio
-    audioEl = document.getElementById('audioPlayer');
-    audioEl.src = trackData.preview;
-    audioEl.volume = 0.8;
-    
-    audioEl.oncanplay = function() {
-      audioEl.play().then(() => {
-        playerIsPlaying = true;
-        document.getElementById('playerPlayBtn').innerHTML = '⏸';
-        startProgressUpdates();
-      }).catch(e => {
-        console.warn('Autoplay blocked:', e);
-        playerIsPlaying = false;
-        document.getElementById('playerPlayBtn').innerHTML = '▶';
-      });
-    };
-    
-    audioEl.onended = function() {
-      playerIsPlaying = false;
-      document.getElementById('playerPlayBtn').innerHTML = '▶';
-      if (progressInterval) clearInterval(progressInterval);
-      // Auto-advance to next track
-      playerNext();
-    };
-    
-    audioEl.onerror = function() {
-      console.warn('Audio playback error');
-      // Try next track
-      setTimeout(() => playerNext(), 1000);
-    };
-    
-    audioEl.load();
-  }
-  
-  function startProgressUpdates() {
-    if (progressInterval) clearInterval(progressInterval);
-    progressInterval = setInterval(() => {
-      if (!audioEl || !audioEl.duration) return;
-      const pct = (audioEl.currentTime / audioEl.duration) * 100;
-      document.getElementById('playerProgressBar').style.width = pct + '%';
-      document.getElementById('playerTimeNow').textContent = formatTime(audioEl.currentTime);
-      document.getElementById('playerTimeDur').textContent = formatTime(audioEl.duration);
-    }, 250);
-  }
-  
-  function formatTime(s) {
-    const m = Math.floor(s / 60);
-    const sec = Math.floor(s % 60);
-    return `${m}:${sec.toString().padStart(2, '0')}`;
-  }
-  
-  function seekAudio(e) {
-    if (!audioEl || !audioEl.duration) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const pct = (e.clientX - rect.left) / rect.width;
-    audioEl.currentTime = pct * audioEl.duration;
-  }
-  
-  function playerToggle() {
-    if (playerCurrentIndex === -1) {
-      playAll();
-      return;
-    }
-    
-    if (audioEl) {
-      if (playerIsPlaying) {
-        audioEl.pause();
-        playerIsPlaying = false;
-        document.getElementById('playerPlayBtn').innerHTML = '▶';
-        if (progressInterval) clearInterval(progressInterval);
-      } else {
-        audioEl.play().then(() => {
-          playerIsPlaying = true;
-          document.getElementById('playerPlayBtn').innerHTML = '⏸';
-          startProgressUpdates();
-        }).catch(() => {});
-      }
-    }
-  }
-  
-  function playerNext() {
-    if (!currentPlaylist) return;
-    const nextIndex = playerCurrentIndex + 1;
-    if (nextIndex < currentPlaylist.songs.length) {
-      playTrack(nextIndex);
-    } else {
-      // End of playlist
-      stopAudioPlayer();
-      document.getElementById('playerPlayBtn').innerHTML = '▶';
-      document.getElementById('playerTrackName').textContent = 'Playlist complete 🎉';
-      document.getElementById('playerTrackArtist').textContent = 'Press play to restart';
-      document.getElementById('playerCounter').textContent = '';
-      document.getElementById('playerProgressBar').style.width = '100%';
-      playerCurrentIndex = -1;
-    }
-  }
-  
-  function playerPrev() {
-    if (!currentPlaylist) return;
-    const prevIndex = playerCurrentIndex - 1;
-    if (prevIndex >= 0) {
-      playTrack(prevIndex);
-    } else if (currentPlaylist.songs.length > 0) {
-      playTrack(0);
-    }
-  }
-  
-  // ═══════════════════════════════════════════════════════════════
-  // DOWNLOAD PLAYLIST
-  // ═══════════════════════════════════════════════════════════════
-  
-  function downloadPlaylist() {
-    if (!currentPlaylist || !currentPlaylist.songs.length) return;
-    
-    const songs = currentPlaylist.songs;
-    const date = new Date().toLocaleDateString('en-US', { 
-      year: 'numeric', month: 'long', day: 'numeric' 
-    });
-    
-    let content = `═══════════════════════════════════════════\n`;
-    content += `  VibeCurate Playlist\n`;
-    content += `  "${currentPlaylist.prompt}"\n`;
-    content += `═══════════════════════════════════════════\n`;
-    content += `  Generated: ${date}\n`;
-    content += `  Tracks: ${songs.length}\n`;
-    content += `  https://vibe.dubltap.io\n`;
-    content += `═══════════════════════════════════════════\n\n`;
-    
-    songs.forEach((song, i) => {
-      const q = encodeURIComponent(`${song.title} ${song.artist}`);
-      content += `${i + 1}. ${song.title} — ${song.artist}\n`;
-      if (song.why) content += `   Why: ${song.why}\n`;
-      content += `   YouTube: https://www.youtube.com/results?search_query=${q}\n`;
-      content += `   Spotify: https://open.spotify.com/search/${q}\n`;
-      content += `\n`;
-    });
-    
-    content += `───────────────────────────────────────────\n`;
-    content += `Made with VibeCurate | dubltap.io\n`;
-    content += `AI that actually does stuff.\n`;
-    
-    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `VibeCurate-${currentPlaylist.prompt.replace(/[^a-zA-Z0-9 ]/g, '').trim().replace(/\s+/g, '-').substring(0, 40)}.txt`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
   }
   
   // ═══ Email Capture ═══
