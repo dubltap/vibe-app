@@ -897,6 +897,197 @@
       font-weight: 700;
     }
     
+    /* ═══ Inline Player ═══ */
+    .player-section {
+      display: none;
+      margin-bottom: var(--phi-lg);
+      background: rgba(255,255,255,0.9);
+      border: 1px solid rgba(196, 183, 166, 0.3);
+      border-radius: 18px;
+      overflow: hidden;
+      animation: fadeUp 0.4s ease-out;
+    }
+    
+    .player-section.active { display: block; }
+    
+    .player-embed {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%;
+      background: #000;
+    }
+    
+    .player-embed iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border: none;
+    }
+    
+    .player-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--ocean-deep), #1a1a2e);
+      color: white;
+      gap: var(--phi-sm);
+    }
+    
+    .player-placeholder-icon { font-size: 3rem; opacity: 0.6; }
+    .player-placeholder-text { font-size: 0.9rem; opacity: 0.5; }
+    
+    .player-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--phi-sm) var(--phi-md);
+      background: rgba(253, 248, 243, 0.95);
+      border-top: 1px solid rgba(196, 183, 166, 0.2);
+    }
+    
+    .player-track-info {
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .player-track-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--ocean-deep);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .player-track-artist {
+      font-size: 0.78rem;
+      color: var(--sand-medium);
+    }
+    
+    .player-track-counter {
+      font-size: 0.7rem;
+      color: var(--purple-light);
+      font-weight: 600;
+      margin-top: 1px;
+    }
+    
+    .player-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .player-ctrl {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1.5px solid var(--ocean-foam);
+      background: white;
+      color: var(--ocean-deep);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      transition: all 0.2s ease;
+    }
+    
+    .player-ctrl:hover {
+      background: var(--purple-glow);
+      border-color: var(--purple-vibe);
+      color: var(--purple-vibe);
+    }
+    
+    .player-ctrl.main {
+      width: 46px;
+      height: 46px;
+      background: linear-gradient(135deg, var(--purple-vibe), var(--sunset-coral));
+      border: none;
+      color: white;
+      font-size: 1.2rem;
+      box-shadow: 0 3px 12px rgba(124, 58, 237, 0.3);
+    }
+    
+    .player-ctrl.main:hover {
+      transform: scale(1.06);
+      box-shadow: 0 5px 18px rgba(124, 58, 237, 0.4);
+      color: white;
+      background: linear-gradient(135deg, var(--purple-vibe), var(--sunset-coral));
+    }
+    
+    .player-loading-msg {
+      text-align: center;
+      padding: 8px;
+      font-size: 0.78rem;
+      color: var(--purple-light);
+      font-weight: 500;
+    }
+    
+    /* Song card active/playing states */
+    .song-card.now-playing {
+      border-color: var(--purple-vibe);
+      background: rgba(124, 58, 237, 0.06);
+      box-shadow: 0 0 0 1px var(--purple-light), 0 4px 16px rgba(124, 58, 237, 0.1);
+    }
+    
+    .song-card.now-playing .song-number {
+      background: var(--purple-vibe);
+      color: white;
+    }
+    
+    .song-card .song-play-inline {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: none;
+      background: var(--purple-glow);
+      color: var(--purple-vibe);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+    
+    .song-card .song-play-inline:hover {
+      background: var(--purple-vibe);
+      color: white;
+      transform: scale(1.1);
+    }
+    
+    .song-card.now-playing .song-play-inline {
+      background: var(--purple-vibe);
+      color: white;
+    }
+    
+    /* Download button variant */
+    .btn-download {
+      background: rgba(42, 157, 143, 0.08);
+      color: var(--ocean-teal);
+      border: 1.5px solid var(--ocean-teal);
+    }
+    .btn-download:hover {
+      background: var(--ocean-teal);
+      color: white;
+    }
+    
+    .btn-play-all {
+      background: linear-gradient(135deg, var(--purple-vibe), var(--sunset-coral));
+      color: white;
+      border: none;
+      box-shadow: 0 2px 10px rgba(124, 58, 237, 0.25);
+    }
+    .btn-play-all:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(124, 58, 237, 0.35);
+    }
+
     /* ═══ Footer ═══ */
     .footer {
       position: relative;
@@ -959,6 +1150,16 @@
       
       .pricing-options {
         grid-template-columns: 1fr;
+      }
+      
+      .player-bar {
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      
+      .player-controls {
+        width: 100%;
+        justify-content: center;
       }
       
       .header-actions .btn span {
@@ -1058,6 +1259,14 @@
           <div class="playlist-mood" id="playlistMood"></div>
         </div>
         <div class="playlist-actions">
+          <button class="btn btn-play-all" onclick="playAll()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Play All
+          </button>
+          <button class="btn btn-download" onclick="downloadPlaylist()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download
+          </button>
           <button class="btn btn-outline" onclick="sharePlaylist()">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
             Share
@@ -1067,6 +1276,30 @@
           </button>
         </div>
       </div>
+      <!-- Inline Player -->
+      <div class="player-section" id="playerSection">
+        <div class="player-embed" id="playerEmbed">
+          <div class="player-placeholder" id="playerPlaceholder">
+            <div class="player-placeholder-icon">🎧</div>
+            <div class="player-placeholder-text">Press Play All or click a track to start</div>
+          </div>
+          <div id="ytPlayer"></div>
+        </div>
+        <div class="player-loading-msg" id="playerLoading" style="display:none">Finding track...</div>
+        <div class="player-bar">
+          <div class="player-track-info">
+            <div class="player-track-name" id="playerTrackName">Ready to play</div>
+            <div class="player-track-artist" id="playerTrackArtist"></div>
+            <div class="player-track-counter" id="playerCounter"></div>
+          </div>
+          <div class="player-controls">
+            <button class="player-ctrl" onclick="playerPrev()" title="Previous">⏮</button>
+            <button class="player-ctrl main" onclick="playerToggle()" id="playerPlayBtn" title="Play/Pause">▶</button>
+            <button class="player-ctrl" onclick="playerNext()" title="Next">⏭</button>
+          </div>
+        </div>
+      </div>
+      
       <ul class="song-list" id="songList"></ul>
       
       <!-- Cross-sell -->
@@ -1142,6 +1375,7 @@
   </div>
 </div>
 
+<script src="https://www.youtube.com/iframe_api"></script>
 <script>
   // ═══════════════════════════════════════════════════════════════
   // VIBECURATE — Application Logic
@@ -1168,6 +1402,27 @@
   let history = [];
   let currentPlaylist = null;
   let isGenerating = false;
+  
+  // ═══ Player State ═══
+  let playerCurrentIndex = -1;
+  let playerIsPlaying = false;
+  let ytPlayerObj = null;
+  let ytApiReady = false;
+  let videoIdCache = {};
+  
+  // Invidious API instances for YouTube video ID resolution
+  const INVIDIOUS_INSTANCES = [
+    'https://inv.nadeko.net',
+    'https://invidious.fdn.fr', 
+    'https://vid.puffyan.us',
+    'https://invidious.nerdvpn.de',
+    'https://iv.ggtyler.dev'
+  ];
+  
+  // YouTube IFrame API ready callback
+  function onYouTubeIframeAPIReady() {
+    ytApiReady = true;
+  }
   
   // ═══ Initialize ═══
   function init() {
@@ -1232,6 +1487,10 @@
   function showHistory() {
     document.getElementById('homeView').style.display = 'none';
     document.getElementById('historyView').classList.add('active');
+    // Pause player if switching to history
+    if (ytPlayerObj && ytPlayerObj.pauseVideo) {
+      try { ytPlayerObj.pauseVideo(); } catch(e) {}
+    }
     renderHistory();
   }
   
@@ -1286,6 +1545,13 @@
     document.getElementById('generateBtn').disabled = true;
     document.getElementById('loadingState').classList.add('active');
     document.getElementById('playlistContainer').classList.remove('active');
+    document.getElementById('playerSection').classList.remove('active');
+    // Stop any current playback
+    if (ytPlayerObj && ytPlayerObj.destroy) {
+      try { ytPlayerObj.destroy(); } catch(e) {}
+      ytPlayerObj = null;
+    }
+    document.getElementById('ytPlayer').innerHTML = '';
     
     try {
       const response = await fetch(`${API_BASE}/api/ai-query`, {
@@ -1433,9 +1699,14 @@
     document.getElementById('playlistTitle').textContent = capitalizeWords(prompt);
     document.getElementById('playlistMood').textContent = '🎧 ' + songs.length + ' tracks curated';
     
+    // Show player section
+    document.getElementById('playerSection').classList.add('active');
+    resetPlayer();
+    
     const list = document.getElementById('songList');
     list.innerHTML = songs.map((song, i) => `
-      <li class="song-card" style="animation-delay: ${i * 0.06}s">
+      <li class="song-card" id="songCard${i}" style="animation-delay: ${i * 0.06}s">
+        <button class="song-play-inline" onclick="playTrack(${i})" title="Play in player">▶</button>
         <div class="song-number">${i + 1}</div>
         <div class="song-info">
           <div class="song-title">${escapeHtml(song.title || 'Unknown')}</div>
@@ -1443,7 +1714,7 @@
           ${song.why ? `<div class="song-why">${escapeHtml(song.why)}</div>` : ''}
         </div>
         <div class="song-actions">
-          <button class="song-btn" onclick="searchYouTube('${escapeAttr(song.title)} ${escapeAttr(song.artist)}')" title="Play on YouTube">▶</button>
+          <button class="song-btn" onclick="searchYouTube('${escapeAttr(song.title)} ${escapeAttr(song.artist)}')" title="Search YouTube">🔗</button>
           <button class="song-btn" onclick="searchSpotify('${escapeAttr(song.title)} ${escapeAttr(song.artist)}')" title="Find on Spotify">🎵</button>
         </div>
       </li>
@@ -1475,6 +1746,259 @@
         alert('Playlist copied to clipboard!');
       });
     }
+  }
+  
+  // ═══════════════════════════════════════════════════════════════
+  // PLAYER — YouTube Embedded Playback
+  // ═══════════════════════════════════════════════════════════════
+  
+  function resetPlayer() {
+    playerCurrentIndex = -1;
+    playerIsPlaying = false;
+    if (ytPlayerObj && ytPlayerObj.destroy) {
+      try { ytPlayerObj.destroy(); } catch(e) {}
+      ytPlayerObj = null;
+    }
+    document.getElementById('ytPlayer').innerHTML = '';
+    document.getElementById('playerPlaceholder').style.display = 'flex';
+    document.getElementById('playerTrackName').textContent = 'Ready to play';
+    document.getElementById('playerTrackArtist').textContent = '';
+    document.getElementById('playerCounter').textContent = '';
+    document.getElementById('playerPlayBtn').innerHTML = '▶';
+    document.getElementById('playerLoading').style.display = 'none';
+    // Clear now-playing highlights
+    document.querySelectorAll('.song-card.now-playing').forEach(el => el.classList.remove('now-playing'));
+  }
+  
+  function playAll() {
+    if (!currentPlaylist || !currentPlaylist.songs.length) return;
+    playTrack(0);
+  }
+  
+  async function playTrack(index) {
+    if (!currentPlaylist || index < 0 || index >= currentPlaylist.songs.length) return;
+    
+    const song = currentPlaylist.songs[index];
+    playerCurrentIndex = index;
+    
+    // Update UI immediately
+    updatePlayerUI(song, index);
+    document.getElementById('playerLoading').style.display = 'block';
+    document.getElementById('playerLoading').textContent = `Finding "${song.title}"...`;
+    
+    // Resolve video ID
+    const query = `${song.title} ${song.artist}`;
+    let videoId = videoIdCache[query];
+    
+    if (!videoId) {
+      videoId = await resolveVideoId(query);
+      if (videoId) videoIdCache[query] = videoId;
+    }
+    
+    document.getElementById('playerLoading').style.display = 'none';
+    
+    if (videoId) {
+      loadYouTubeVideo(videoId);
+    } else {
+      // Fallback: show message and offer to open YouTube
+      document.getElementById('playerPlaceholder').style.display = 'flex';
+      document.getElementById('playerPlaceholder').innerHTML = `
+        <div class="player-placeholder-icon">⚠️</div>
+        <div class="player-placeholder-text">Couldn't load video embed</div>
+        <button class="btn btn-outline" style="margin-top:8px;font-size:0.82rem" 
+          onclick="searchYouTube('${escapeAttr(song.title)} ${escapeAttr(song.artist)}')">
+          Open on YouTube ↗
+        </button>
+      `;
+    }
+    
+    // Scroll player into view
+    document.getElementById('playerSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+  
+  function updatePlayerUI(song, index) {
+    const total = currentPlaylist.songs.length;
+    document.getElementById('playerTrackName').textContent = song.title;
+    document.getElementById('playerTrackArtist').textContent = song.artist;
+    document.getElementById('playerCounter').textContent = `Track ${index + 1} of ${total}`;
+    
+    // Highlight current track in list
+    document.querySelectorAll('.song-card.now-playing').forEach(el => el.classList.remove('now-playing'));
+    const card = document.getElementById('songCard' + index);
+    if (card) {
+      card.classList.add('now-playing');
+      card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }
+  
+  async function resolveVideoId(query) {
+    for (const instance of INVIDIOUS_INSTANCES) {
+      try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 4000);
+        
+        const res = await fetch(
+          `${instance}/api/v1/search?q=${encodeURIComponent(query)}&type=video&sort_by=relevance`,
+          { signal: controller.signal }
+        );
+        clearTimeout(timeout);
+        
+        if (!res.ok) continue;
+        const data = await res.json();
+        
+        if (data && data.length > 0 && data[0].videoId) {
+          return data[0].videoId;
+        }
+      } catch (e) {
+        // Try next instance
+        continue;
+      }
+    }
+    return null;
+  }
+  
+  function loadYouTubeVideo(videoId) {
+    document.getElementById('playerPlaceholder').style.display = 'none';
+    
+    if (ytApiReady && ytPlayerObj && ytPlayerObj.loadVideoById) {
+      // Reuse existing player
+      ytPlayerObj.loadVideoById(videoId);
+      playerIsPlaying = true;
+      document.getElementById('playerPlayBtn').innerHTML = '⏸';
+    } else if (ytApiReady) {
+      // Create new player
+      ytPlayerObj = new YT.Player('ytPlayer', {
+        height: '100%',
+        width: '100%',
+        videoId: videoId,
+        playerVars: {
+          autoplay: 1,
+          modestbranding: 1,
+          rel: 0,
+          playsinline: 1
+        },
+        events: {
+          onReady: function(e) {
+            e.target.playVideo();
+            playerIsPlaying = true;
+            document.getElementById('playerPlayBtn').innerHTML = '⏸';
+          },
+          onStateChange: function(e) {
+            if (e.data === YT.PlayerState.ENDED) {
+              // Auto-advance to next track
+              playerNext();
+            } else if (e.data === YT.PlayerState.PLAYING) {
+              playerIsPlaying = true;
+              document.getElementById('playerPlayBtn').innerHTML = '⏸';
+            } else if (e.data === YT.PlayerState.PAUSED) {
+              playerIsPlaying = false;
+              document.getElementById('playerPlayBtn').innerHTML = '▶';
+            }
+          },
+          onError: function(e) {
+            console.warn('YT player error:', e.data);
+            // Try next track on error
+            setTimeout(() => playerNext(), 1500);
+          }
+        }
+      });
+    } else {
+      // YouTube API not loaded yet — fallback to direct embed
+      document.getElementById('ytPlayer').innerHTML = `
+        <iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1" 
+          allow="autoplay; encrypted-media" allowfullscreen
+          style="position:absolute;top:0;left:0;width:100%;height:100%;border:none"></iframe>
+      `;
+      playerIsPlaying = true;
+      document.getElementById('playerPlayBtn').innerHTML = '⏸';
+    }
+  }
+  
+  function playerToggle() {
+    if (playerCurrentIndex === -1) {
+      playAll();
+      return;
+    }
+    
+    if (ytPlayerObj && ytPlayerObj.getPlayerState) {
+      const state = ytPlayerObj.getPlayerState();
+      if (state === YT.PlayerState.PLAYING) {
+        ytPlayerObj.pauseVideo();
+      } else {
+        ytPlayerObj.playVideo();
+      }
+    }
+  }
+  
+  function playerNext() {
+    if (!currentPlaylist) return;
+    const nextIndex = playerCurrentIndex + 1;
+    if (nextIndex < currentPlaylist.songs.length) {
+      playTrack(nextIndex);
+    } else {
+      // End of playlist
+      playerIsPlaying = false;
+      document.getElementById('playerPlayBtn').innerHTML = '▶';
+      document.getElementById('playerTrackName').textContent = 'Playlist complete 🎉';
+      document.getElementById('playerTrackArtist').textContent = 'Press play to restart';
+      document.getElementById('playerCounter').textContent = '';
+      playerCurrentIndex = -1;
+    }
+  }
+  
+  function playerPrev() {
+    if (!currentPlaylist) return;
+    const prevIndex = playerCurrentIndex - 1;
+    if (prevIndex >= 0) {
+      playTrack(prevIndex);
+    } else if (currentPlaylist.songs.length > 0) {
+      playTrack(0);
+    }
+  }
+  
+  // ═══════════════════════════════════════════════════════════════
+  // DOWNLOAD PLAYLIST
+  // ═══════════════════════════════════════════════════════════════
+  
+  function downloadPlaylist() {
+    if (!currentPlaylist || !currentPlaylist.songs.length) return;
+    
+    const songs = currentPlaylist.songs;
+    const date = new Date().toLocaleDateString('en-US', { 
+      year: 'numeric', month: 'long', day: 'numeric' 
+    });
+    
+    let content = `═══════════════════════════════════════════\n`;
+    content += `  VibeCurate Playlist\n`;
+    content += `  "${currentPlaylist.prompt}"\n`;
+    content += `═══════════════════════════════════════════\n`;
+    content += `  Generated: ${date}\n`;
+    content += `  Tracks: ${songs.length}\n`;
+    content += `  https://vibe.dubltap.io\n`;
+    content += `═══════════════════════════════════════════\n\n`;
+    
+    songs.forEach((song, i) => {
+      const q = encodeURIComponent(`${song.title} ${song.artist}`);
+      content += `${i + 1}. ${song.title} — ${song.artist}\n`;
+      if (song.why) content += `   Why: ${song.why}\n`;
+      content += `   YouTube: https://www.youtube.com/results?search_query=${q}\n`;
+      content += `   Spotify: https://open.spotify.com/search/${q}\n`;
+      content += `\n`;
+    });
+    
+    content += `───────────────────────────────────────────\n`;
+    content += `Made with VibeCurate | dubltap.io\n`;
+    content += `AI that actually does stuff.\n`;
+    
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `VibeCurate-${currentPlaylist.prompt.replace(/[^a-zA-Z0-9 ]/g, '').trim().replace(/\s+/g, '-').substring(0, 40)}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   }
   
   // ═══ Email Capture ═══
