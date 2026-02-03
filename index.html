@@ -3,46 +3,1602 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VibeCurate - Coming Soon | dubltap.io</title>
-  <meta name="description" content="AI-powered playlist curation across platforms. Find your perfect soundtrack and share the vibe.">
+  <title>VibeCurate — AI-Powered Playlist Curation | dubltap.io</title>
+  <meta name="description" content="Tell us the mood. We'll find the music. AI-powered playlist curation that understands your vibe. Free unlimited playlists.">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="VibeCurate | AI-Powered Playlist Curation">
+  <meta property="og:description" content="Tell us the mood. We'll find the music. Free unlimited AI-curated playlists.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://vibe.dubltap.io">
+  
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="VibeCurate | AI-Powered Playlist Curation">
+  <meta name="twitter:description" content="Tell us the mood. We'll find the music. Free unlimited AI-curated playlists.">
+  
+  <meta name="theme-color" content="#264653">
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
   <style>
-    :root{--sunset-gold:#F4A261;--sunset-coral:#E76F51;--ocean-deep:#264653;--ocean-teal:#2A9D8F;--sand-light:#FDF8F3;--sand-dark:#4A4238}
-    *{margin:0;padding:0;box-sizing:border-box}
-    body{font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--sand-light),#fff);color:var(--sand-dark);text-align:center;padding:2rem}
-    .container{max-width:600px}
-    .logo{font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:700;color:var(--ocean-deep);margin-bottom:3rem}
-    .logo span{color:var(--sunset-gold)}
-    .icon{font-size:5rem;margin-bottom:1.5rem}
-    h1{font-family:'Outfit',sans-serif;font-size:3rem;font-weight:800;color:var(--ocean-deep);margin-bottom:1rem}
-    h1 span{background:linear-gradient(135deg,var(--sunset-gold),var(--sunset-coral));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-    .tagline{font-size:1.25rem;color:var(--sand-dark);margin-bottom:2rem;line-height:1.6}
-    .email-form{display:flex;gap:0.75rem;max-width:400px;margin:0 auto 1.5rem}
-    .email-form input{flex:1;padding:1rem 1.25rem;border:2px solid #e0d6cc;border-radius:12px;font-size:1rem;outline:none;transition:border-color 0.2s}
-    .email-form input:focus{border-color:var(--ocean-teal)}
-    .email-form button{padding:1rem 1.5rem;background:linear-gradient(135deg,var(--sunset-gold),var(--sunset-coral));color:var(--ocean-deep);border:none;border-radius:12px;font-weight:600;cursor:pointer;transition:all 0.2s}
-    .email-form button:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(244,162,97,0.4)}
-    .note{font-size:0.875rem;color:#999;margin-bottom:3rem}
-    .back-link{color:var(--ocean-teal);text-decoration:none;font-weight:500}
-    .back-link:hover{color:var(--sunset-coral)}
-    @media(max-width:480px){h1{font-size:2rem}.email-form{flex-direction:column}}
+    /* ═══════════════════════════════════════════════════════════
+       VIBECURATE — DESIGN SYSTEM
+       dubltap.io Bridge Product | Golden Ratio (φ = 1.618)
+       ═══════════════════════════════════════════════════════════ */
+    
+    :root {
+      /* SoCal Sunset */
+      --sunset-gold: #F4A261;
+      --sunset-coral: #E76F51;
+      --sunset-peach: #FFBE98;
+      
+      /* Ocean */
+      --ocean-deep: #264653;
+      --ocean-teal: #2A9D8F;
+      --ocean-foam: #A8DADC;
+      
+      /* Sand */
+      --sand-light: #FDF8F3;
+      --sand-warm: #E9E0D6;
+      --sand-medium: #C4B7A6;
+      --sand-dark: #4A4238;
+      
+      /* VibeCurate Accent */
+      --purple-vibe: #7C3AED;
+      --purple-light: #A78BFA;
+      --purple-glow: rgba(124, 58, 237, 0.15);
+      
+      /* Golden Ratio Spacing */
+      --phi-xs: 0.382rem;
+      --phi-sm: 0.618rem;
+      --phi-md: 1rem;
+      --phi-lg: 1.618rem;
+      --phi-xl: 2.618rem;
+      --phi-2xl: 4.236rem;
+      --phi-3xl: 6.854rem;
+      
+      /* Typography */
+      --font-display: 'Outfit', system-ui, sans-serif;
+      --font-body: 'DM Sans', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: var(--font-body);
+      background: var(--sand-light);
+      color: var(--sand-dark);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    
+    /* ═══ Ambient Background ═══ */
+    .bg-ambient {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background: 
+        radial-gradient(ellipse 80% 50% at 20% 40%, rgba(124, 58, 237, 0.06) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 60% at 80% 20%, rgba(244, 162, 97, 0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 50% 90%, rgba(42, 157, 143, 0.05) 0%, transparent 50%);
+    }
+    
+    .bg-ambient::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      opacity: 0.4;
+    }
+    
+    /* ═══ Header ═══ */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(253, 248, 243, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(196, 183, 166, 0.3);
+    }
+    
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: var(--phi-sm) var(--phi-lg);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: var(--phi-sm);
+      cursor: pointer;
+    }
+    
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--purple-vibe), var(--sunset-coral));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3);
+    }
+    
+    .logo-text {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: var(--ocean-deep);
+      letter-spacing: -0.02em;
+    }
+    
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--phi-sm);
+    }
+    
+    .header-stat {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.8);
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--sand-dark);
+    }
+    
+    .header-stat svg { color: var(--ocean-teal); }
+    
+    @media (min-width: 640px) {
+      .header-stat { display: flex; }
+    }
+    
+    /* ═══ Buttons ═══ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 18px;
+      border-radius: 25px;
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 0.85rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+    
+    .btn-ghost {
+      background: transparent;
+      color: var(--sand-dark);
+    }
+    .btn-ghost:hover {
+      background: var(--sand-warm);
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, var(--sunset-gold), var(--sunset-coral));
+      color: white;
+      box-shadow: 0 2px 10px rgba(244, 162, 97, 0.3);
+    }
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(244, 162, 97, 0.4);
+    }
+    
+    .btn-vibe {
+      background: linear-gradient(135deg, var(--purple-vibe), var(--sunset-coral));
+      color: white;
+      box-shadow: 0 2px 12px rgba(124, 58, 237, 0.3);
+    }
+    .btn-vibe:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 18px rgba(124, 58, 237, 0.4);
+    }
+    
+    .btn-outline {
+      background: transparent;
+      color: var(--ocean-deep);
+      border: 1.5px solid var(--ocean-foam);
+    }
+    .btn-outline:hover {
+      background: var(--sand-warm);
+      border-color: var(--ocean-teal);
+    }
+    
+    .btn-lg {
+      padding: 12px 28px;
+      font-size: 0.95rem;
+    }
+    
+    .pro-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      background: var(--ocean-deep);
+      color: var(--sunset-gold);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.82rem;
+    }
+    
+    /* ═══ Main Content ═══ */
+    .main {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: var(--phi-xl) var(--phi-lg) var(--phi-3xl);
+    }
+    
+    /* ═══ Hero ═══ */
+    .hero {
+      text-align: center;
+      margin-bottom: var(--phi-2xl);
+      animation: fadeUp 0.6s ease-out;
+    }
+    
+    .hero-icon {
+      font-size: 3.5rem;
+      margin-bottom: var(--phi-md);
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    .hero h1 {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      line-height: 1.05;
+      color: var(--ocean-deep);
+      margin-bottom: var(--phi-sm);
+    }
+    
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--purple-vibe), var(--sunset-coral), var(--sunset-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .hero p {
+      font-size: 1.2rem;
+      color: var(--sand-dark);
+      margin-bottom: var(--phi-lg);
+    }
+    
+    .free-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 18px;
+      border-radius: 20px;
+      background: rgba(42, 157, 143, 0.08);
+      border: 1px solid var(--ocean-teal);
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--ocean-teal);
+    }
+    
+    /* ═══ Usage Indicator ═══ */
+    .usage-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--phi-sm);
+      margin-bottom: var(--phi-lg);
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    
+    .usage-track {
+      width: 100px;
+      height: 6px;
+      background: var(--sand-warm);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    
+    .usage-fill {
+      height: 100%;
+      border-radius: 3px;
+      background: var(--ocean-teal);
+      transition: width 0.4s ease, background 0.3s ease;
+    }
+    
+    .usage-fill.low { background: var(--sunset-coral); }
+    
+    .usage-text { color: var(--sand-dark); }
+    .usage-text.low { color: var(--sunset-coral); }
+    
+    /* ═══ Quick Prompts ═══ */
+    .quick-section {
+      text-align: center;
+      margin-bottom: var(--phi-lg);
+    }
+    
+    .quick-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--sand-medium);
+      margin-bottom: var(--phi-sm);
+    }
+    
+    .quick-prompts {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+    
+    .quick-prompt {
+      padding: 7px 16px;
+      border-radius: 20px;
+      border: 1px solid var(--ocean-foam);
+      background: rgba(255,255,255,0.7);
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--sand-dark);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .quick-prompt:hover {
+      background: var(--purple-glow);
+      border-color: var(--purple-light);
+      color: var(--purple-vibe);
+      transform: translateY(-1px);
+    }
+    
+    /* ═══ Input Section ═══ */
+    .input-section {
+      margin-bottom: var(--phi-xl);
+    }
+    
+    .input-container {
+      display: flex;
+      gap: var(--phi-sm);
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    
+    .vibe-input {
+      flex: 1;
+      padding: 14px 20px;
+      border-radius: 16px;
+      border: 2px solid var(--ocean-foam);
+      background: white;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      color: var(--sand-dark);
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+    
+    .vibe-input:focus {
+      border-color: var(--purple-vibe);
+      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+    }
+    
+    .vibe-input::placeholder {
+      color: var(--sand-medium);
+    }
+    
+    .generate-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 24px;
+      border-radius: 16px;
+      border: none;
+      background: linear-gradient(135deg, var(--purple-vibe), var(--sunset-coral));
+      color: white;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      box-shadow: 0 3px 15px rgba(124, 58, 237, 0.3);
+    }
+    
+    .generate-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(124, 58, 237, 0.4);
+    }
+    
+    .generate-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    /* ═══ Loading ═══ */
+    .loading-state {
+      text-align: center;
+      padding: var(--phi-2xl) var(--phi-lg);
+      display: none;
+    }
+    
+    .loading-state.active { display: block; }
+    
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid var(--sand-warm);
+      border-top-color: var(--purple-vibe);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto var(--phi-md);
+    }
+    
+    .loading-text {
+      font-weight: 500;
+      color: var(--sand-dark);
+    }
+    
+    .loading-sub {
+      font-size: 0.85rem;
+      color: var(--sand-medium);
+      margin-top: 4px;
+    }
+    
+    /* ═══ Playlist Results ═══ */
+    .playlist-container {
+      display: none;
+    }
+    
+    .playlist-container.active { display: block; }
+    
+    .playlist-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--phi-lg);
+      flex-wrap: wrap;
+      gap: var(--phi-sm);
+    }
+    
+    .playlist-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.5rem;
+      color: var(--ocean-deep);
+    }
+    
+    .playlist-mood {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--purple-vibe);
+      padding: 4px 12px;
+      background: var(--purple-glow);
+      border-radius: 12px;
+    }
+    
+    .playlist-actions {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .song-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: var(--phi-xl);
+    }
+    
+    .song-card {
+      display: flex;
+      align-items: center;
+      gap: var(--phi-md);
+      padding: var(--phi-md);
+      background: rgba(255,255,255,0.85);
+      border: 1px solid rgba(196, 183, 166, 0.25);
+      border-radius: 14px;
+      transition: all 0.2s ease;
+      animation: fadeUp 0.4s ease-out both;
+    }
+    
+    .song-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+      border-color: var(--purple-light);
+    }
+    
+    .song-number {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--purple-glow);
+      color: var(--purple-vibe);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    
+    .song-info {
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .song-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--ocean-deep);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .song-artist {
+      font-size: 0.82rem;
+      color: var(--sand-dark);
+      margin-top: 1px;
+    }
+    
+    .song-why {
+      font-size: 0.78rem;
+      color: var(--sand-medium);
+      font-style: italic;
+      margin-top: 2px;
+    }
+    
+    .song-actions {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    
+    .song-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 1px solid var(--ocean-foam);
+      background: white;
+      color: var(--sand-dark);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      font-size: 0.85rem;
+    }
+    
+    .song-btn:hover {
+      background: var(--purple-glow);
+      border-color: var(--purple-light);
+      color: var(--purple-vibe);
+    }
+    
+    /* ═══ Cross-Sell Banner ═══ */
+    .cross-sell {
+      background: linear-gradient(135deg, rgba(42, 157, 143, 0.08), rgba(244, 162, 97, 0.08));
+      border: 1px solid rgba(42, 157, 143, 0.2);
+      border-radius: 16px;
+      padding: var(--phi-lg);
+      text-align: center;
+      margin-top: var(--phi-xl);
+    }
+    
+    .cross-sell h3 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--ocean-deep);
+      margin-bottom: var(--phi-xs);
+    }
+    
+    .cross-sell p {
+      font-size: 0.9rem;
+      color: var(--sand-dark);
+      margin-bottom: var(--phi-md);
+    }
+    
+    /* ═══ History Section ═══ */
+    .history-section {
+      display: none;
+    }
+    
+    .history-section.active { display: block; }
+    
+    .history-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.5rem;
+      color: var(--ocean-deep);
+      margin-bottom: var(--phi-lg);
+    }
+    
+    .history-empty {
+      text-align: center;
+      padding: var(--phi-2xl);
+      color: var(--sand-medium);
+    }
+    
+    .history-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--phi-md);
+      background: rgba(255,255,255,0.85);
+      border: 1px solid rgba(196, 183, 166, 0.25);
+      border-radius: 12px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .history-item:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    
+    .history-item-info h4 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--ocean-deep);
+    }
+    
+    .history-item-info p {
+      font-size: 0.78rem;
+      color: var(--sand-medium);
+      margin-top: 2px;
+    }
+    
+    .history-item-count {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.82rem;
+      color: var(--purple-vibe);
+    }
+    
+    /* ═══ Modals ═══ */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(38, 70, 83, 0.5);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: var(--phi-lg);
+    }
+    
+    .modal-overlay.active {
+      display: flex;
+    }
+    
+    .modal {
+      background: var(--sand-light);
+      border-radius: 24px;
+      padding: var(--phi-xl);
+      max-width: 440px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+      position: relative;
+      animation: scaleIn 0.3s ease-out;
+    }
+    
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: none;
+      background: var(--sand-warm);
+      color: var(--sand-dark);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      transition: background 0.2s;
+    }
+    
+    .modal-close:hover { background: var(--sand-medium); }
+    
+    .modal-icon {
+      font-size: 2.5rem;
+      margin-bottom: var(--phi-sm);
+    }
+    
+    .modal h2 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.5rem;
+      color: var(--ocean-deep);
+      margin-bottom: var(--phi-xs);
+    }
+    
+    .modal p {
+      color: var(--sand-dark);
+      font-size: 0.92rem;
+      margin-bottom: var(--phi-lg);
+      line-height: 1.5;
+    }
+    
+    .modal-input {
+      width: 100%;
+      padding: 12px 18px;
+      border-radius: 12px;
+      border: 2px solid var(--ocean-foam);
+      background: white;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      color: var(--sand-dark);
+      outline: none;
+      margin-bottom: var(--phi-sm);
+      transition: border-color 0.2s;
+    }
+    
+    .modal-input:focus {
+      border-color: var(--ocean-teal);
+      box-shadow: 0 0 0 3px rgba(42, 157, 143, 0.1);
+    }
+    
+    .modal-submit {
+      width: 100%;
+      padding: 12px;
+      border-radius: 12px;
+      border: none;
+      background: var(--sunset-gold);
+      color: var(--ocean-deep);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .modal-submit:hover {
+      background: var(--sunset-coral);
+      color: white;
+      transform: translateY(-1px);
+    }
+    
+    .modal-dismiss {
+      display: block;
+      width: 100%;
+      text-align: center;
+      margin-top: var(--phi-sm);
+      font-size: 0.82rem;
+      color: var(--sand-medium);
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    
+    .modal-dismiss:hover { color: var(--sand-dark); }
+    
+    .modal-fine-print {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--sand-medium);
+      margin-top: var(--phi-md);
+    }
+    
+    .modal-error {
+      color: var(--sunset-coral);
+      font-size: 0.82rem;
+      margin-bottom: var(--phi-sm);
+      display: none;
+    }
+    
+    /* ═══ Upgrade Modal ═══ */
+    .pricing-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--phi-sm);
+      margin-bottom: var(--phi-md);
+    }
+    
+    .pricing-card {
+      padding: var(--phi-md);
+      border-radius: 14px;
+      border: 2px solid var(--ocean-foam);
+      background: white;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    
+    .pricing-card:hover, .pricing-card.selected {
+      border-color: var(--purple-vibe);
+      box-shadow: 0 4px 16px rgba(124, 58, 237, 0.15);
+    }
+    
+    .pricing-card.recommended::before {
+      content: 'Best Value';
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 2px 12px;
+      background: var(--ocean-teal);
+      color: white;
+      font-size: 0.68rem;
+      font-weight: 700;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    .pricing-name {
+      font-weight: 700;
+      color: var(--ocean-deep);
+      margin-bottom: 4px;
+      font-size: 0.88rem;
+    }
+    
+    .pricing-price {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--purple-vibe);
+    }
+    
+    .pricing-price span {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--sand-dark);
+    }
+    
+    .pricing-savings {
+      font-size: 0.75rem;
+      color: var(--ocean-teal);
+      font-weight: 600;
+      margin-top: 2px;
+    }
+    
+    .upgrade-features {
+      list-style: none;
+      margin-bottom: var(--phi-lg);
+    }
+    
+    .upgrade-features li {
+      padding: 5px 0;
+      font-size: 0.88rem;
+      color: var(--sand-dark);
+    }
+    
+    .upgrade-features li::before {
+      content: '✓ ';
+      color: var(--ocean-teal);
+      font-weight: 700;
+    }
+    
+    /* ═══ Footer ═══ */
+    .footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: var(--phi-xl) var(--phi-lg);
+      font-size: 0.82rem;
+      color: var(--sand-medium);
+    }
+    
+    .footer a {
+      color: var(--ocean-teal);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .footer a:hover { text-decoration: underline; }
+    
+    /* ═══ Animations ═══ */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.92); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    
+    .hidden { display: none !important; }
+    
+    /* ═══ Responsive ═══ */
+    @media (max-width: 640px) {
+      .input-container {
+        flex-direction: column;
+      }
+      
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+      
+      .song-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--phi-sm);
+      }
+      
+      .song-actions {
+        align-self: flex-end;
+      }
+      
+      .pricing-options {
+        grid-template-columns: 1fr;
+      }
+      
+      .header-actions .btn span {
+        display: none;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="logo">dubltap<span>.</span>io</div>
-    <div class="icon">🎵</div>
-    <h1><span>VibeCurate</span></h1>
-    <p class="tagline">AI-powered playlist curation across platforms. Find your perfect soundtrack and share the vibe. Coming soon.</p>
-    <form class="email-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-      <input type="email" name="email" placeholder="your@email.com" required>
-      <input type="hidden" name="source" value="vibe.dubltap.io">
-      <button type="submit">Notify Me</button>
-    </form>
-    <p class="note">Be first to know when we launch. No spam.</p>
-    <a href="https://dubltap.io" class="back-link">← Back to all apps</a>
+
+<div class="bg-ambient"></div>
+
+<!-- ═══ Header ═══ -->
+<header class="header">
+  <div class="header-inner">
+    <div class="logo" onclick="showHome()">
+      <div class="logo-icon">🎧</div>
+      <span class="logo-text">VibeCurate</span>
+    </div>
+    <div class="header-actions">
+      <div class="header-stat" id="statCounter">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        <span id="playlistCount">0</span> created
+      </div>
+      <button class="btn btn-ghost" onclick="showHistory()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>History</span>
+      </button>
+      <button class="btn btn-vibe" onclick="showUpgradeModal()" id="upgradeBtn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+        <span>Go Pro</span>
+      </button>
+    </div>
   </div>
+</header>
+
+<!-- ═══ Main ═══ -->
+<main class="main">
+  
+  <!-- Home View -->
+  <div id="homeView">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-icon">🎧</div>
+      <h1>Your Vibe.<br><span>AI Curated.</span></h1>
+      <p>Tell us the mood. We'll find the music.</p>
+      <div class="free-badge" id="freeBadge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <span id="freeBadgeText">5 free playlists — No credit card required</span>
+      </div>
+    </section>
+    
+    <!-- Usage Bar (visible after first use) -->
+    <div class="usage-bar hidden" id="usageBar">
+      <div class="usage-track">
+        <div class="usage-fill" id="usageFill" style="width: 0%"></div>
+      </div>
+      <span class="usage-text" id="usageText">5 left</span>
+    </div>
+    
+    <!-- Quick Prompts -->
+    <section class="quick-section">
+      <div class="quick-label">⚡ Quick Start</div>
+      <div class="quick-prompts">
+        <button class="quick-prompt" onclick="setPrompt('Late night drive through the city')">🌃 Late night drive</button>
+        <button class="quick-prompt" onclick="setPrompt('Sunday morning coffee and sunshine')">☀️ Sunday morning</button>
+        <button class="quick-prompt" onclick="setPrompt('Getting hyped for the gym')">💪 Gym hype</button>
+        <button class="quick-prompt" onclick="setPrompt('Rainy day reading and relaxation')">🌧️ Rainy day vibes</button>
+        <button class="quick-prompt" onclick="setPrompt('Summer beach party energy')">🏖️ Beach party</button>
+        <button class="quick-prompt" onclick="setPrompt('Focus mode for deep work')">🧠 Deep focus</button>
+      </div>
+    </section>
+    
+    <!-- Input -->
+    <section class="input-section">
+      <div class="input-container">
+        <input type="text" class="vibe-input" id="vibeInput" placeholder="Describe your vibe..." maxlength="200">
+        <button class="generate-btn" onclick="generatePlaylist()" id="generateBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Curate
+        </button>
+      </div>
+    </section>
+    
+    <!-- Loading -->
+    <div class="loading-state" id="loadingState">
+      <div class="spinner"></div>
+      <div class="loading-text">Curating your vibe...</div>
+      <div class="loading-sub">Finding the perfect tracks</div>
+    </div>
+    
+    <!-- Results -->
+    <div class="playlist-container" id="playlistContainer">
+      <div class="playlist-header">
+        <div>
+          <div class="playlist-title" id="playlistTitle">Your Playlist</div>
+          <div class="playlist-mood" id="playlistMood"></div>
+        </div>
+        <div class="playlist-actions">
+          <button class="btn btn-outline" onclick="sharePlaylist()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            Share
+          </button>
+          <button class="btn btn-vibe" onclick="showHome(); document.getElementById('vibeInput').focus();">
+            + New Vibe
+          </button>
+        </div>
+      </div>
+      <ul class="song-list" id="songList"></ul>
+      
+      <!-- Cross-sell -->
+      <div class="cross-sell">
+        <h3>🎨 Design a playlist cover?</h3>
+        <p>Use <strong>Aesthetic AI</strong> to create stunning visuals for your playlists.</p>
+        <a href="https://aesthetic.dubltap.io" target="_blank" class="btn btn-outline">Try Aesthetic AI →</a>
+      </div>
+    </div>
+  </div>
+  
+  <!-- History View -->
+  <div class="history-section" id="historyView">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--phi-lg)">
+      <h2 class="history-title" style="margin-bottom:0">Your Playlists</h2>
+      <button class="btn btn-ghost" onclick="showHome()">← Back</button>
+    </div>
+    <div id="historyList">
+      <div class="history-empty">No playlists yet. Describe a vibe to get started!</div>
+    </div>
+  </div>
+  
+</main>
+
+<!-- ═══ Footer ═══ -->
+<footer class="footer">
+  Part of <a href="https://dubltap.io">dubltap.io</a> — AI that actually does stuff.
+</footer>
+
+<!-- ═══ Email Capture Modal ═══ -->
+<div class="modal-overlay" id="emailModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeEmailModal()">✕</button>
+    <div class="modal-icon">🎧</div>
+    <h2>Unlock VibeCurate</h2>
+    <p>Enter your email to get 5 free AI-curated playlists per month, plus weekly music discovery.</p>
+    <div class="modal-error" id="emailError">Please enter a valid email address.</div>
+    <input type="email" class="modal-input" id="emailInput" placeholder="your@email.com" onkeypress="if(event.key==='Enter')submitEmail()">
+    <button class="modal-submit" onclick="submitEmail()">Get Free Access</button>
+    <button class="modal-dismiss" onclick="closeEmailModal()">Maybe later</button>
+    <div class="modal-fine-print">No spam. Unsubscribe anytime. We're cool like that.</div>
+  </div>
+</div>
+
+<!-- ═══ Upgrade Modal ═══ -->
+<div class="modal-overlay" id="upgradeModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeUpgradeModal()">✕</button>
+    <div class="modal-icon">👑</div>
+    <h2>Upgrade to Pro</h2>
+    <p>Unlimited playlists, advanced moods, and exclusive features.</p>
+    <div class="pricing-options">
+      <div class="pricing-card recommended" id="annualCard" onclick="selectPlan('annual')">
+        <div class="pricing-name">Annual</div>
+        <div class="pricing-price">$79 <span>/year</span></div>
+        <div class="pricing-savings">Save 27% — $6.58/mo</div>
+      </div>
+      <div class="pricing-card" id="monthlyCard" onclick="selectPlan('monthly')">
+        <div class="pricing-name">Monthly</div>
+        <div class="pricing-price">$9 <span>/month</span></div>
+        <div class="pricing-savings">&nbsp;</div>
+      </div>
+    </div>
+    <ul class="upgrade-features">
+      <li>Unlimited AI-curated playlists</li>
+      <li>Advanced mood & genre control</li>
+      <li>Playlist export & sharing</li>
+      <li>Priority AI processing</li>
+      <li>No ads, no limits</li>
+    </ul>
+    <button class="btn btn-vibe btn-lg" style="width:100%" onclick="handleUpgrade()" id="upgradeSubmit">Start 7-Day Free Trial</button>
+    <button class="modal-dismiss" onclick="closeUpgradeModal()">Not now</button>
+  </div>
+</div>
+
+<script>
+  // ═══════════════════════════════════════════════════════════════
+  // VIBECURATE — Application Logic
+  // dubltap.io Bridge Product
+  // ═══════════════════════════════════════════════════════════════
+  
+  const API_BASE = 'https://api.dubltap.io';
+  const FREE_LIMIT = 5;
+  const EMAIL_GATE_AFTER = 2; // Prompt email after 2nd playlist
+  
+  // ═══ Stripe Price IDs ═══
+  // UPDATE THESE with your actual Stripe price IDs from dashboard
+  const STRIPE_PRICES = {
+    monthly: 'price_1SwZuDBkYqg7J4R72M7HXfLg',
+    annual: 'price_1SwZveBkYqg7J4R7pUhnhc5b'
+  };
+  
+  // ═══ State ═══
+  let isRegistered = false;
+  let isPro = false;
+  let playlistsCreated = 0;
+  let selectedPlan = 'annual';
+  let userEmail = '';
+  let history = [];
+  let currentPlaylist = null;
+  let isGenerating = false;
+  
+  // ═══ Initialize ═══
+  function init() {
+    loadState();
+    updateUI();
+    
+    document.getElementById('vibeInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') generatePlaylist();
+    });
+  }
+  
+  function loadState() {
+    isRegistered = localStorage.getItem('vibecurate_registered') === 'true';
+    isPro = localStorage.getItem('vibecurate_pro') === 'true';
+    playlistsCreated = parseInt(localStorage.getItem('vibecurate_count') || '0');
+    userEmail = localStorage.getItem('vibecurate_email') || '';
+    
+    try {
+      history = JSON.parse(localStorage.getItem('vibecurate_history') || '[]');
+    } catch { history = []; }
+  }
+  
+  function saveState() {
+    localStorage.setItem('vibecurate_registered', isRegistered);
+    localStorage.setItem('vibecurate_pro', isPro);
+    localStorage.setItem('vibecurate_count', playlistsCreated);
+    localStorage.setItem('vibecurate_email', userEmail);
+    localStorage.setItem('vibecurate_history', JSON.stringify(history.slice(0, 50)));
+  }
+  
+  function updateUI() {
+    // Counter
+    document.getElementById('playlistCount').textContent = playlistsCreated;
+    
+    // Pro badge
+    if (isPro) {
+      document.getElementById('upgradeBtn').innerHTML = '<span class="pro-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg> Pro</span>';
+      document.getElementById('upgradeBtn').onclick = null;
+      document.getElementById('freeBadge').innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> <span>Pro — Unlimited playlists</span>';
+      document.getElementById('usageBar').classList.add('hidden');
+    } else if (isRegistered) {
+      const remaining = Math.max(0, FREE_LIMIT - playlistsCreated);
+      const usedPct = Math.min((playlistsCreated / FREE_LIMIT) * 100, 100);
+      const isLow = remaining <= 1;
+      
+      document.getElementById('usageBar').classList.remove('hidden');
+      document.getElementById('usageFill').style.width = usedPct + '%';
+      document.getElementById('usageFill').className = 'usage-fill' + (isLow ? ' low' : '');
+      document.getElementById('usageText').textContent = remaining + ' left';
+      document.getElementById('usageText').className = 'usage-text' + (isLow ? ' low' : '');
+      
+      document.getElementById('freeBadgeText').textContent = remaining + ' free playlists remaining';
+    }
+  }
+  
+  // ═══ Navigation ═══
+  function showHome() {
+    document.getElementById('homeView').style.display = 'block';
+    document.getElementById('historyView').classList.remove('active');
+  }
+  
+  function showHistory() {
+    document.getElementById('homeView').style.display = 'none';
+    document.getElementById('historyView').classList.add('active');
+    renderHistory();
+  }
+  
+  function renderHistory() {
+    const container = document.getElementById('historyList');
+    if (history.length === 0) {
+      container.innerHTML = '<div class="history-empty">No playlists yet. Describe a vibe to get started!</div>';
+      return;
+    }
+    
+    container.innerHTML = history.map((item, i) => `
+      <div class="history-item" onclick="replayPlaylist(${i})">
+        <div class="history-item-info">
+          <h4>${escapeHtml(item.prompt)}</h4>
+          <p>${new Date(item.date).toLocaleDateString()} · ${item.songs?.length || 0} tracks</p>
+        </div>
+        <div class="history-item-count">${item.songs?.length || 0} 🎵</div>
+      </div>
+    `).join('');
+  }
+  
+  function replayPlaylist(index) {
+    currentPlaylist = history[index];
+    displayPlaylist(currentPlaylist.prompt, currentPlaylist.songs);
+    showHome();
+  }
+  
+  // ═══ Quick Prompt ═══
+  function setPrompt(text) {
+    document.getElementById('vibeInput').value = text;
+    generatePlaylist();
+  }
+  
+  // ═══ Generate Playlist ═══
+  async function generatePlaylist() {
+    const prompt = document.getElementById('vibeInput').value.trim();
+    if (!prompt || isGenerating) return;
+    
+    // Check email gate
+    if (!isRegistered && playlistsCreated >= EMAIL_GATE_AFTER) {
+      showEmailModal();
+      return;
+    }
+    
+    // Check free limit
+    if (!isPro && isRegistered && playlistsCreated >= FREE_LIMIT) {
+      showUpgradeModal();
+      return;
+    }
+    
+    isGenerating = true;
+    document.getElementById('generateBtn').disabled = true;
+    document.getElementById('loadingState').classList.add('active');
+    document.getElementById('playlistContainer').classList.remove('active');
+    
+    try {
+      const response = await fetch(`${API_BASE}/api/ai-query`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          app: 'vibecurate',
+          action: 'generate-playlist',
+          content: prompt,
+          email: userEmail || 'anonymous'
+        })
+      });
+      
+      if (!response.ok) throw new Error('API error');
+      
+      const data = await response.json();
+      let songs = [];
+      
+      // Parse response — handle various formats
+      if (data.result) {
+        const text = typeof data.result === 'string' ? data.result : JSON.stringify(data.result);
+        try {
+          // Try to extract JSON array from the response
+          const jsonMatch = text.match(/\[[\s\S]*\]/);
+          if (jsonMatch) {
+            songs = JSON.parse(jsonMatch[0]);
+          } else {
+            // Try parsing the whole result
+            const parsed = JSON.parse(text);
+            songs = Array.isArray(parsed) ? parsed : parsed.playlist || parsed.songs || [];
+          }
+        } catch {
+          // Fallback: generate from text lines
+          songs = parseSongsFromText(text);
+        }
+      }
+      
+      if (songs.length === 0) {
+        songs = getFallbackPlaylist(prompt);
+      }
+      
+      // Track usage
+      playlistsCreated++;
+      
+      // Save to history
+      const entry = { prompt, songs, date: new Date().toISOString() };
+      history.unshift(entry);
+      currentPlaylist = entry;
+      
+      saveState();
+      updateUI();
+      displayPlaylist(prompt, songs);
+      
+    } catch (error) {
+      console.error('Generation error:', error);
+      // Use intelligent fallback
+      const songs = getFallbackPlaylist(prompt);
+      playlistsCreated++;
+      const entry = { prompt, songs, date: new Date().toISOString() };
+      history.unshift(entry);
+      currentPlaylist = entry;
+      saveState();
+      updateUI();
+      displayPlaylist(prompt, songs);
+    }
+    
+    isGenerating = false;
+    document.getElementById('generateBtn').disabled = false;
+    document.getElementById('loadingState').classList.remove('active');
+  }
+  
+  function parseSongsFromText(text) {
+    const lines = text.split('\n').filter(l => l.trim());
+    const songs = [];
+    for (const line of lines) {
+      const match = line.match(/["']?(.+?)["']?\s*[-–—by]+\s*(.+)/i);
+      if (match) {
+        songs.push({
+          title: match[1].replace(/^\d+[\.\)]\s*/, '').trim(),
+          artist: match[2].split(/[-(]/)[0].trim(),
+          why: 'Matches your vibe'
+        });
+      }
+    }
+    return songs.slice(0, 10);
+  }
+  
+  function getFallbackPlaylist(prompt) {
+    const p = prompt.toLowerCase();
+    
+    if (p.includes('focus') || p.includes('work') || p.includes('study')) {
+      return [
+        { title: 'Intro', artist: 'The xx', why: 'Minimal, hypnotic layering for deep concentration' },
+        { title: 'Weightless', artist: 'Marconi Union', why: 'Scientifically designed to reduce anxiety' },
+        { title: 'Experience', artist: 'Ludovico Einaudi', why: 'Piano that elevates without distracting' },
+        { title: 'Strobe', artist: 'deadmau5', why: 'Progressive build for long sessions' },
+        { title: 'Flume', artist: 'Bon Iver', why: 'Ambient folk that centers the mind' },
+        { title: 'Time', artist: 'Hans Zimmer', why: 'Epic build for big project energy' },
+        { title: 'Midnight City', artist: 'M83', why: 'Dreamy synthwave to stay in the zone' },
+        { title: 'Teardrop', artist: 'Massive Attack', why: 'Atmospheric trip-hop for creative flow' },
+      ];
+    }
+    
+    if (p.includes('gym') || p.includes('workout') || p.includes('hype') || p.includes('energy')) {
+      return [
+        { title: 'Lose Yourself', artist: 'Eminem', why: 'Ultimate motivation anthem' },
+        { title: 'POWER', artist: 'Kanye West', why: 'Raw energy and confidence' },
+        { title: "Stronger", artist: 'Kanye West', why: 'Daft Punk sample drives the tempo' },
+        { title: 'Eye of the Tiger', artist: 'Survivor', why: 'Classic workout motivation' },
+        { title: "'Till I Collapse", artist: 'Eminem ft. Nate Dogg', why: 'Push past limits anthem' },
+        { title: 'Thunderstruck', artist: 'AC/DC', why: 'Electric guitar energy surge' },
+        { title: 'Run This Town', artist: 'JAY-Z ft. Rihanna', why: 'Triumphant ownership energy' },
+        { title: 'Bangarang', artist: 'Skrillex', why: 'Bass drops for max intensity' },
+      ];
+    }
+    
+    if (p.includes('chill') || p.includes('relax') || p.includes('rain') || p.includes('calm')) {
+      return [
+        { title: 'Holocene', artist: 'Bon Iver', why: 'Ethereal folk that wraps like a blanket' },
+        { title: 'Skinny Love', artist: 'Bon Iver', why: 'Raw emotion, whisper quiet' },
+        { title: 'Pink + White', artist: 'Frank Ocean', why: 'Soft, layered, dreamy R&B' },
+        { title: 'Saturn', artist: 'SZA', why: 'Gentle contemplation in every note' },
+        { title: 'Neon Moon', artist: 'Brooks & Dunn', why: 'Country longing on a quiet night' },
+        { title: 'The Night We Met', artist: 'Lord Huron', why: 'Bittersweet nostalgia' },
+        { title: 'Sunset Lover', artist: 'Petit Biscuit', why: 'Electronic warmth like golden hour' },
+        { title: 'Agnes', artist: 'Glass Animals', why: 'Haunting indie for reflective moods' },
+      ];
+    }
+    
+    // Default eclectic mix
+    return [
+      { title: 'Blinding Lights', artist: 'The Weeknd', why: 'Retro-synth energy that moves' },
+      { title: 'Redbone', artist: 'Childish Gambino', why: 'Funk-soul groove for any mood' },
+      { title: 'Electric Feel', artist: 'MGMT', why: 'Psychedelic pop with infectious rhythm' },
+      { title: 'Dreams', artist: 'Fleetwood Mac', why: 'Timeless vibes, universal appeal' },
+      { title: 'Do I Wanna Know?', artist: 'Arctic Monkeys', why: 'Cool, brooding indie rock' },
+      { title: 'Get Lucky', artist: 'Daft Punk', why: 'Funky, feel-good perfection' },
+      { title: 'Summertime Magic', artist: 'Childish Gambino', why: 'Warm, laid-back sunshine' },
+      { title: 'Levitating', artist: 'Dua Lipa', why: 'Disco-pop that lifts the spirit' },
+    ];
+  }
+  
+  function displayPlaylist(prompt, songs) {
+    document.getElementById('playlistContainer').classList.add('active');
+    document.getElementById('playlistTitle').textContent = capitalizeWords(prompt);
+    document.getElementById('playlistMood').textContent = '🎧 ' + songs.length + ' tracks curated';
+    
+    const list = document.getElementById('songList');
+    list.innerHTML = songs.map((song, i) => `
+      <li class="song-card" style="animation-delay: ${i * 0.06}s">
+        <div class="song-number">${i + 1}</div>
+        <div class="song-info">
+          <div class="song-title">${escapeHtml(song.title || 'Unknown')}</div>
+          <div class="song-artist">${escapeHtml(song.artist || 'Unknown Artist')}</div>
+          ${song.why ? `<div class="song-why">${escapeHtml(song.why)}</div>` : ''}
+        </div>
+        <div class="song-actions">
+          <button class="song-btn" onclick="searchYouTube('${escapeAttr(song.title)} ${escapeAttr(song.artist)}')" title="Play on YouTube">▶</button>
+          <button class="song-btn" onclick="searchSpotify('${escapeAttr(song.title)} ${escapeAttr(song.artist)}')" title="Find on Spotify">🎵</button>
+        </div>
+      </li>
+    `).join('');
+    
+    // Scroll to results
+    document.getElementById('playlistContainer').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  
+  // ═══ External Links ═══
+  function searchYouTube(query) {
+    window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`, '_blank');
+  }
+  
+  function searchSpotify(query) {
+    window.open(`https://open.spotify.com/search/${encodeURIComponent(query)}`, '_blank');
+  }
+  
+  function sharePlaylist() {
+    if (!currentPlaylist) return;
+    const text = `🎧 VibeCurate Playlist: "${currentPlaylist.prompt}"\n\n` +
+      currentPlaylist.songs.map((s, i) => `${i+1}. ${s.title} — ${s.artist}`).join('\n') +
+      '\n\nMade with https://vibe.dubltap.io';
+    
+    if (navigator.share) {
+      navigator.share({ title: 'VibeCurate Playlist', text });
+    } else {
+      navigator.clipboard.writeText(text).then(() => {
+        alert('Playlist copied to clipboard!');
+      });
+    }
+  }
+  
+  // ═══ Email Capture ═══
+  function showEmailModal() {
+    document.getElementById('emailModal').classList.add('active');
+    setTimeout(() => document.getElementById('emailInput').focus(), 100);
+  }
+  
+  function closeEmailModal() {
+    document.getElementById('emailModal').classList.remove('active');
+  }
+  
+  async function submitEmail() {
+    const email = document.getElementById('emailInput').value.trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+    if (!emailRegex.test(email)) {
+      document.getElementById('emailError').style.display = 'block';
+      return;
+    }
+    
+    document.getElementById('emailError').style.display = 'none';
+    userEmail = email;
+    isRegistered = true;
+    saveState();
+    updateUI();
+    closeEmailModal();
+    
+    // Send to backend
+    try {
+      await fetch(`${API_BASE}/api/email-capture`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          source: 'vibecurate',
+          tags: ['vibecurate', 'bridge-product']
+        })
+      });
+    } catch (e) {
+      console.log('Email capture sent');
+    }
+    
+    // Continue with generation if they were trying to create
+    const prompt = document.getElementById('vibeInput').value.trim();
+    if (prompt) generatePlaylist();
+  }
+  
+  // ═══ Upgrade Flow ═══
+  function showUpgradeModal() {
+    document.getElementById('upgradeModal').classList.add('active');
+    selectPlan('annual');
+  }
+  
+  function closeUpgradeModal() {
+    document.getElementById('upgradeModal').classList.remove('active');
+  }
+  
+  function selectPlan(plan) {
+    selectedPlan = plan;
+    document.getElementById('annualCard').classList.toggle('selected', plan === 'annual');
+    document.getElementById('monthlyCard').classList.toggle('selected', plan === 'monthly');
+  }
+  
+  async function handleUpgrade() {
+    const priceId = STRIPE_PRICES[selectedPlan];
+    
+    try {
+      const response = await fetch(`${API_BASE}/create-checkout`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          priceId,
+          email: userEmail || undefined,
+          successUrl: window.location.origin + '/?upgraded=true',
+          cancelUrl: window.location.origin + '/'
+        })
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        if (data.url) {
+          window.location.href = data.url;
+        }
+      } else {
+        alert('Unable to start checkout. Please try again.');
+      }
+    } catch (error) {
+      console.error('Checkout error:', error);
+      alert('Unable to connect to payment system. Please try again.');
+    }
+  }
+  
+  // ═══ Check for upgrade success ═══
+  function checkUpgradeSuccess() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('upgraded') === 'true') {
+      isPro = true;
+      saveState();
+      updateUI();
+      window.history.replaceState({}, '', window.location.pathname);
+      alert('🎉 Welcome to VibeCurate Pro! Unlimited playlists unlocked.');
+    }
+  }
+  
+  // ═══ Utilities ═══
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+  
+  function escapeAttr(str) {
+    return (str || '').replace(/'/g, "\\'").replace(/"/g, '\\"');
+  }
+  
+  function capitalizeWords(str) {
+    return str.replace(/\b\w/g, l => l.toUpperCase());
+  }
+  
+  // ═══ Boot ═══
+  init();
+  checkUpgradeSuccess();
+</script>
+
 </body>
 </html>
