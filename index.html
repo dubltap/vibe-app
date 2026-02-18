@@ -617,6 +617,62 @@
       color: var(--sand-dark);
       margin-bottom: var(--phi-md);
     }
+
+    /* ═══ Aesthetic AI Cover Integration ═══ */
+    .btn-aesthetic-ai {
+      background: linear-gradient(135deg, #7c3aed, #2a9d8f);
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn-aesthetic-ai:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(124, 58, 237, 0.35);
+    }
+    .aesthetic-modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 10000; opacity: 0; pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .aesthetic-modal-overlay.active { opacity: 1; pointer-events: all; }
+    .aesthetic-modal {
+      background: #1a1a2e; border-radius: 20px;
+      padding: 32px; max-width: 480px; width: 90%;
+      text-align: center; color: #f0f0f0;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.6);
+      transform: translateY(20px); transition: transform 0.3s ease;
+    }
+    .aesthetic-modal-overlay.active .aesthetic-modal { transform: translateY(0); }
+    .aesthetic-modal h2 { font-size: 1.5rem; margin-bottom: 8px; }
+    .aesthetic-modal p { font-size: 0.9rem; opacity: 0.75; margin-bottom: 20px; line-height: 1.5; }
+    #aestheticCoverCanvas {
+      border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      margin-bottom: 20px; max-width: 100%;
+    }
+    .aesthetic-modal-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .aesthetic-modal-btns button {
+      padding: 12px 24px; border-radius: 50px; border: none;
+      cursor: pointer; font-weight: 600; font-size: 0.9rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .aesthetic-btn-launch {
+      background: linear-gradient(135deg, #7c3aed, #2a9d8f);
+      color: white;
+    }
+    .aesthetic-btn-launch:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(124,58,237,0.4);
+    }
+    .aesthetic-btn-cancel {
+      background: rgba(255,255,255,0.1); color: #f0f0f0;
+    }
+    .aesthetic-cover-generating {
+      font-size: 0.85rem; opacity: 0.6; margin-top: 8px;
+    }
     
     /* ═══ History Section ═══ */
     .history-section {
@@ -1426,7 +1482,9 @@
       <div class="cross-sell">
         <h3>🎨 Design a playlist cover?</h3>
         <p>Use <strong>Aesthetic AI</strong> to create stunning visuals for your playlists.</p>
-        <a href="https://aesthetic.dubltap.io" target="_blank" class="btn btn-outline">Try Aesthetic AI →</a>
+        <button class="btn btn-aesthetic-ai" onclick="openAestheticAI()" title="Auto-import your playlist to Aesthetic AI and generate a custom cover">
+          🎨 Design Playlist Cover →
+        </button>
       </div>
     </div>
   </div>
@@ -2322,6 +2380,194 @@
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+  }
+
+  // ═══ Aesthetic AI Playlist Cover Integration ═══
+  function generatePlaylistCoverCanvas(playlist) {
+    const canvas = document.createElement('canvas');
+    const SIZE = 600;
+    canvas.width = SIZE;
+    canvas.height = SIZE;
+    const ctx = canvas.getContext('2d');
+    const songs = playlist.songs || [];
+    const prompt = playlist.prompt || '';
+
+    // Colour palette seeded from prompt string
+    const palettes = [
+      ['#0f0c29','#302b63','#24243e','#8e2de2','#4a00e0'],
+      ['#1a1a2e','#16213e','#0f3460','#e94560','#f5a623'],
+      ['#0d0d0d','#1a1a1a','#2a9d8f','#e9c46a','#f4a261'],
+      ['#1b1b2f','#2e294e','#541388','#f1d302','#e8d5b7'],
+      ['#03045e','#023e8a','#0077b6','#00b4d8','#90e0ef'],
+    ];
+    const pidx = Math.abs(prompt.split('').reduce((a,c)=>a+c.charCodeAt(0),0)) % palettes.length;
+    const pal = palettes[pidx];
+
+    // Background gradient
+    const bg = ctx.createLinearGradient(0, 0, SIZE, SIZE);
+    bg.addColorStop(0, pal[0]);
+    bg.addColorStop(0.5, pal[1]);
+    bg.addColorStop(1, pal[2]);
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, SIZE, SIZE);
+
+    // Decorative ambient glow circles
+    ctx.globalAlpha = 0.15;
+    [[SIZE*0.85, SIZE*0.15, SIZE*0.55],[SIZE*0.1, SIZE*0.9, SIZE*0.45]].forEach(([x,y,r])=>{
+      const g = ctx.createRadialGradient(x,y,0,x,y,r);
+      g.addColorStop(0, pal[3]); g.addColorStop(1,'transparent');
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+
+    // Subtle music note watermark grid
+    ctx.globalAlpha = 0.06;
+    ctx.font = '40px serif';
+    ctx.fillStyle = pal[3];
+    for (let row = 0; row < 6; row++) {
+      for (let col = 0; col < 6; col++) {
+        ctx.fillText('\u266B', col*110 - 20, row*110 + 60);
+      }
+    }
+    ctx.globalAlpha = 1;
+
+    // Header band
+    ctx.fillStyle = 'rgba(0,0,0,0.45)';
+    ctx.beginPath();
+    ctx.roundRect(24, 24, SIZE-48, 82, 16);
+    ctx.fill();
+
+    // VibeCurate label
+    ctx.fillStyle = pal[3];
+    ctx.font = 'bold 13px system-ui, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('VIBECURATE PLAYLIST', 44, 55);
+
+    // Playlist prompt title
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 22px system-ui, sans-serif';
+    const titleText = prompt.length > 36 ? prompt.substring(0,33)+'\u2026' : prompt;
+    ctx.fillText(titleText, 44, 88);
+
+    // Song list rows
+    const maxSongs = Math.min(songs.length, 10);
+    const listY = 136;
+    const rowH = 46;
+    for (let i = 0; i < maxSongs; i++) {
+      const s = songs[i];
+      const y = listY + i * rowH;
+      ctx.fillStyle = i % 2 === 0 ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.2)';
+      ctx.fillRect(24, y, SIZE-48, rowH-4);
+
+      // Track number
+      ctx.fillStyle = pal[3];
+      ctx.font = 'bold 14px system-ui, sans-serif';
+      ctx.textAlign = 'right';
+      ctx.fillText(String(i+1).padStart(2,'0'), 64, y + 17);
+
+      // Song title
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 14px system-ui, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText((s.title || 'Unknown').substring(0, 32), 74, y + 17);
+
+      // Artist
+      ctx.fillStyle = 'rgba(255,255,255,0.6)';
+      ctx.font = '12px system-ui, sans-serif';
+      ctx.fillText((s.artist || '').substring(0, 36), 74, y + 33);
+
+      // Music note icon
+      ctx.fillStyle = pal[4];
+      ctx.font = '14px serif';
+      ctx.textAlign = 'right';
+      ctx.fillText('\u266A', SIZE-36, y + 20);
+    }
+
+    // Footer band
+    ctx.fillStyle = 'rgba(0,0,0,0.5)';
+    ctx.fillRect(24, SIZE-54, SIZE-48, 34);
+    ctx.fillStyle = pal[3];
+    ctx.font = '11px system-ui, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('vibe.dubltap.io', SIZE/2, SIZE-31);
+    ctx.fillStyle = 'rgba(255,255,255,0.4)';
+    ctx.font = '10px system-ui, sans-serif';
+    ctx.fillText('\u2605 ' + songs.length + ' tracks curated by AI', SIZE/2, SIZE-14);
+
+    return canvas;
+  }
+
+  function openAestheticAI() {
+    if (!currentPlaylist || !currentPlaylist.songs || !currentPlaylist.songs.length) {
+      alert('Generate a playlist first, then click this button to design its cover!');
+      return;
+    }
+
+    // Create or reuse the preview modal
+    let overlay = document.getElementById('aestheticAIModal');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'aestheticAIModal';
+      overlay.className = 'aesthetic-modal-overlay';
+      overlay.innerHTML = `
+        <div class="aesthetic-modal">
+          <h2>\uD83C\uDFA8 Your Playlist Cover</h2>
+          <p>Your playlist has been transformed into a custom cover design.<br>
+             Click <strong>Open Aesthetic AI</strong> to refine and export it in any social format!</p>
+          <canvas id="aestheticCoverCanvas" width="300" height="300" style="display:block;margin:0 auto 16px;"></canvas>
+          <div class="aesthetic-cover-generating" id="aestheticGenStatus">Generating cover art\u2026</div>
+          <div class="aesthetic-modal-btns" style="margin-top:20px;">
+            <button class="aesthetic-btn-launch" onclick="launchAestheticAI()">\uD83D\uDE80 Open Aesthetic AI \u2192</button>
+            <button class="aesthetic-btn-cancel" onclick="closeAestheticModal()">Cancel</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(overlay);
+    }
+
+    // Fade in modal
+    requestAnimationFrame(() => overlay.classList.add('active'));
+
+    // Generate the full-res cover canvas and scale to preview
+    setTimeout(() => {
+      const sourceCanvas = generatePlaylistCoverCanvas(currentPlaylist);
+      const previewCanvas = document.getElementById('aestheticCoverCanvas');
+      if (previewCanvas) {
+        const pCtx = previewCanvas.getContext('2d');
+        pCtx.drawImage(sourceCanvas, 0, 0, 300, 300);
+      }
+
+      // Persist cover + playlist data in localStorage for Aesthetic AI to read
+      try {
+        const coverDataURL = sourceCanvas.toDataURL('image/png');
+        localStorage.setItem('vibecurate_playlist_for_aesthetic', JSON.stringify({
+          coverDataURL,
+          prompt: currentPlaylist.prompt,
+          trackCount: (currentPlaylist.songs || []).length,
+          date: currentPlaylist.date,
+          songs: (currentPlaylist.songs || []).map(s => ({ title: s.title, artist: s.artist }))
+        }));
+        const statusEl = document.getElementById('aestheticGenStatus');
+        if (statusEl) statusEl.textContent = '\u2728 Cover ready! Click Open Aesthetic AI to continue.';
+      } catch (e) {
+        const statusEl = document.getElementById('aestheticGenStatus');
+        if (statusEl) statusEl.textContent = 'Cover preview ready.';
+      }
+    }, 50);
+  }
+
+  function launchAestheticAI() {
+    const pl = currentPlaylist || {};
+    const prompt = encodeURIComponent(pl.prompt || 'My Playlist');
+    const trackCount = (pl.songs || []).length;
+    const url = 'https://aesthetic.dubltap.io/?source=vibecurate&playlist=' + prompt + '&tracks=' + trackCount + '&autoload=1';
+    window.open(url, '_blank');
+    closeAestheticModal();
+  }
+
+  function closeAestheticModal() {
+    const overlay = document.getElementById('aestheticAIModal');
+    if (overlay) overlay.classList.remove('active');
   }
   
   // ═══ Email Capture ═══
