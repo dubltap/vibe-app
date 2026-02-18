@@ -2558,10 +2558,12 @@
 
   function launchAestheticAI() {
     const pl = currentPlaylist || {};
-    const prompt = encodeURIComponent(pl.prompt || 'My Playlist');
-    const trackCount = (pl.songs || []).length;
-    const url = 'https://aesthetic.dubltap.io/?source=vibecurate&playlist=' + prompt + '&tracks=' + trackCount + '&autoload=1';
-    window.open(url, '_blank');
+    const handoffData = {
+      prompt: pl.prompt || '',
+      songs: (pl.songs || []).map(s => ({ title: s.title, artist: s.artist }))
+    };
+    const hash = '#vibecurate=' + encodeURIComponent(JSON.stringify(handoffData));
+    window.open('https://aesthetic.dubltap.io/' + hash, '_blank');
     closeAestheticModal();
   }
 
