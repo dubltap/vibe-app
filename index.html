@@ -2390,7 +2390,7 @@
     const priceId = STRIPE_PRICES[selectedPlan];
     
     try {
-      const response = await fetch(`${API_BASE}/create-checkout`, {
+      const response = await fetch(`${API_BASE}/api/create-checkout`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
