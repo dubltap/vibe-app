@@ -1707,7 +1707,7 @@
     }
     
     // Check free limit
-    if (!isPro && isRegistered && playlistsCreated >= FREE_LIMIT) {
+    if (!isPro && playlistsCreated >= FREE_LIMIT) {
       showUpgradeModal();
       return;
     }
