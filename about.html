@@ -1,222 +1,167 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>About VibeCurate — AI Music & Playlist Curator | dubltap.io</title>
-<meta name="description" content="VibeCurate is a free AI music curation tool that builds the perfect playlist for any mood, moment, or activity. Tell it your vibe, get your soundtrack. No algorithm guessing — pure intentional listening.">
-<link rel="canonical" href="https://vibe.dubltap.io/about.html">
-<meta property="og:title" content="About VibeCurate — AI Music & Playlist Curator">
-<meta property="og:description" content="AI-powered playlist builder. Describe your mood, get your perfect soundtrack. Free.">
-<meta property="og:image" content="https://vibe.dubltap.io/og-image.png">
-<meta property="og:url" content="https://vibe.dubltap.io/about.html">
-<meta property="og:type" content="article">
-<meta property="og:site_name" content="VibeCurate">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="About VibeCurate — AI Music Curator">
-<meta name="twitter:description" content="Describe your mood. Get your perfect playlist. Free AI music curation.">
-<meta name="twitter:image" content="https://vibe.dubltap.io/og-image.png">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": "About VibeCurate: AI-Powered Music and Playlist Curator",
-  "description": "VibeCurate uses AI to understand your mood, context, and taste — then curates the perfect playlist for any moment, activity, or emotional state. No endless scrolling. Just the right music, now.",
-  "image": "https://vibe.dubltap.io/og-image.png",
-  "author": {"@type": "Organization", "name": "dubltap.io", "url": "https://dubltap.io"},
-  "publisher": {"@type": "Organization", "name": "dubltap.io", "logo": {"@type": "ImageObject", "url": "https://dubltap.io/dubltap-mascot.png"}},
-  "mainEntityOfPage": {"@type": "WebPage", "@id": "https://vibe.dubltap.io/about.html"},
-  "datePublished": "2026-02-23",
-  "dateModified": "2026-02-23",
-  "keywords": "AI playlist curator, AI music recommendation, mood-based playlist, AI music curation tool, personalized playlist AI, music mood matcher, vibe playlist generator 2026"
-}
-</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
-<style>
-:root {
-  --bg-dark: #0a0a0f;
-  --bg-card: #12121a;
-  --violet-500: #8b5cf6;
-  --violet-400: #a78bfa;
-  --pink-500: #ec4899;
-  --pink-400: #f472b6;
-  --text-primary: #ffffff;
-  --text-secondary: rgba(255,255,255,0.85);
-  --text-muted: rgba(255,255,255,0.6);
-  --gradient-vibe: linear-gradient(135deg, #8b5cf6, #ec4899);
-  --radius-lg: 13px;
-  --radius-full: 9999px;
-}
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.7; }
-.header { padding: 16px 24px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.5); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; }
-.logo-text { font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 18px; }
-.logo-text span { color: var(--violet-400); }
-.nav-links { display: flex; gap: 20px; align-items: center; }
-.nav-links a { color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
-.nav-links a:hover { color: var(--violet-400); }
-.btn-cta { padding: 10px 22px; background: var(--gradient-vibe); color: white; border-radius: var(--radius-full); text-decoration: none; font-weight: 700; font-size: 14px; }
-.hero { max-width: 860px; margin: 0 auto; padding: 80px 24px 60px; text-align: center; }
-.hero-badge { display: inline-block; background: rgba(167,139,250,0.12); border: 1px solid rgba(167,139,250,0.35); color: var(--violet-400); border-radius: var(--radius-full); padding: 6px 18px; font-size: 13px; font-weight: 600; margin-bottom: 24px; }
-.hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(30px, 5vw, 50px); font-weight: 800; line-height: 1.15; margin-bottom: 20px; }
-.hero h1 em { background: var(--gradient-vibe); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-style: normal; }
-.hero p { font-size: 18px; color: var(--text-secondary); max-width: 620px; margin: 0 auto 36px; }
-.content { max-width: 800px; margin: 0 auto; padding: 0 24px 80px; }
-.section { margin-bottom: 56px; }
-.section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700; margin-bottom: 18px; }
-.section h2 .accent { color: var(--violet-400); }
-.section p { font-size: 16px; color: var(--text-secondary); margin-bottom: 16px; }
-.feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 18px; margin-top: 24px; }
-.feature-card { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-lg); padding: 24px; }
-.feature-card .icon { font-size: 32px; margin-bottom: 12px; }
-.feature-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
-.feature-card p { font-size: 14px; color: var(--text-muted); margin: 0; }
-.tag-cloud { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
-.tag { background: rgba(139,92,246,0.12); border: 1px solid rgba(139,92,246,0.3); color: var(--violet-400); border-radius: var(--radius-full); padding: 6px 16px; font-size: 14px; font-weight: 500; }
-.highlight-box { background: rgba(139,92,246,0.08); border: 1px solid rgba(139,92,246,0.25); border-radius: var(--radius-lg); padding: 28px; margin: 28px 0; }
-.steps { counter-reset: step; list-style: none; }
-.steps li { counter-increment: step; display: flex; gap: 20px; align-items: flex-start; margin-bottom: 24px; }
-.steps li::before { content: counter(step); min-width: 40px; height: 40px; background: var(--gradient-vibe); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 16px; flex-shrink: 0; }
-.steps li .step-content h3 { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
-.steps li .step-content p { font-size: 15px; color: var(--text-muted); margin: 0; }
-.email-section { background: linear-gradient(135deg, rgba(139,92,246,0.12), rgba(236,72,153,0.08)); border: 1px solid rgba(167,139,250,0.3); border-radius: var(--radius-lg); padding: 48px 40px; text-align: center; margin-bottom: 56px; }
-.email-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 800; margin-bottom: 12px; }
-.email-section p { color: var(--text-secondary); margin-bottom: 28px; font-size: 16px; }
-.email-form { display: flex; gap: 12px; max-width: 440px; margin: 0 auto; }
-.email-form input { flex: 1; padding: 14px 18px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); border-radius: var(--radius-full); color: white; font-size: 15px; outline: none; }
-.email-form input::placeholder { color: var(--text-muted); }
-.email-form input:focus { border-color: var(--violet-400); }
-.email-form button { padding: 14px 26px; background: var(--gradient-vibe); color: white; border: none; border-radius: var(--radius-full); font-size: 15px; font-weight: 700; cursor: pointer; white-space: nowrap; }
-.internal-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 20px; }
-.internal-link { display: block; padding: 16px 20px; background: var(--bg-card); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-lg); color: white; text-decoration: none; font-weight: 600; font-size: 14px; transition: all 0.2s; }
-.internal-link:hover { border-color: rgba(167,139,250,0.4); background: rgba(167,139,250,0.08); color: var(--violet-400); }
-.internal-link .link-icon { font-size: 20px; margin-bottom: 6px; display: block; }
-.footer { text-align: center; padding: 24px; color: var(--text-muted); font-size: 13px; border-top: 1px solid rgba(255,255,255,0.05); }
-.footer a { color: var(--violet-400); text-decoration: none; }
-@media (max-width: 600px) { .email-form { flex-direction: column; } .hero { padding: 48px 20px 40px; } }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About VibeCurate — AI-Powered Playlist Curation | dubltap.io</title>
+  <meta name="description" content="VibeCurate is a free AI-powered playlist curation tool. Tell us your mood and we'll build your perfect playlist — for work, workouts, winding down, or any vibe you're chasing. Unlimited playlists, free forever.">
+  <link rel="canonical" href="https://vibe.dubltap.io/about.html">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="About VibeCurate — AI Playlist Curation Tool">
+  <meta property="og:description" content="Tell the AI your mood. Get the perfect playlist. Free, unlimited, and scarily accurate.">
+  <meta property="og:image" content="https://vibe.dubltap.io/og-image.png">
+  <meta property="og:url" content="https://vibe.dubltap.io/about.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="VibeCurate">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="About VibeCurate — AI Playlist Curation">
+  <meta name="twitter:description" content="Your mood. Your music. Free AI playlist builder.">
+  <meta name="twitter:image" content="https://vibe.dubltap.io/og-image.png">
+
+  <!-- Article Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "About VibeCurate: Free AI-Powered Playlist Curation Tool",
+    "description": "VibeCurate is a free AI playlist curator that understands your mood, energy, and listening context — then builds a perfectly sequenced playlist that matches your vibe, every time.",
+    "image": "https://vibe.dubltap.io/og-image.png",
+    "author": {"@type": "Organization", "name": "dubltap.io", "url": "https://dubltap.io"},
+    "publisher": {"@type": "Organization", "name": "dubltap.io", "logo": {"@type": "ImageObject", "url": "https://dubltap.io/dubltap-mascot.png"}},
+    "mainEntityOfPage": {"@type": "WebPage", "@id": "https://vibe.dubltap.io/about.html"},
+    "datePublished": "2026-02-23",
+    "dateModified": "2026-02-23",
+    "keywords": "AI playlist generator, mood-based playlist AI, free playlist curation, AI music recommendations, personalized playlist tool, mood music AI, curated playlist generator"
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #050510;
+      --bg-card: #0c0c1f;
+      --purple-600: #7c3aed;
+      --purple-400: #a78bfa;
+      --teal-400: #2dd4bf;
+      --text-primary: #ffffff;
+      --text-secondary: rgba(255,255,255,0.85);
+      --text-muted: rgba(255,255,255,0.6);
+      --gradient-vibe: linear-gradient(135deg, #7c3aed, #2dd4bf);
+      --radius-lg: 13px;
+      --radius-full: 9999px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); line-height: 1.7; }
+    .header { padding: 16px 24px; border-bottom: 1px solid rgba(124,58,237,0.2); display: flex; align-items: center; justify-content: space-between; background: rgba(5,5,16,0.85); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; }
+    .logo-text { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 18px; background: var(--gradient-vibe); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .nav-links { display: flex; gap: 20px; align-items: center; }
+    .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--purple-400); }
+    .btn-cta { padding: 10px 22px; background: var(--gradient-vibe); color: white; border-radius: var(--radius-full); text-decoration: none; font-weight: 700; font-size: 14px; }
+    .hero { max-width: 860px; margin: 0 auto; padding: 80px 24px 60px; text-align: center; }
+    .hero-badge { display: inline-block; background: rgba(124,58,237,0.12); border: 1px solid rgba(124,58,237,0.3); color: var(--purple-400); border-radius: var(--radius-full); padding: 6px 18px; font-size: 13px; font-weight: 600; margin-bottom: 24px; }
+    .hero h1 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: clamp(30px, 5vw, 50px); font-weight: 800; line-height: 1.15; margin-bottom: 20px; }
+    .hero h1 em { background: var(--gradient-vibe); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-style: normal; }
+    .hero p { font-size: 18px; color: var(--text-secondary); max-width: 620px; margin: 0 auto 36px; }
+    .content { max-width: 800px; margin: 0 auto; padding: 0 24px 80px; }
+    .section { margin-bottom: 56px; }
+    .section h2 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 28px; font-weight: 700; margin-bottom: 18px; }
+    .section h2 .accent { color: var(--purple-400); }
+    .section p { font-size: 16px; color: var(--text-secondary); margin-bottom: 16px; }
+    .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 18px; margin-top: 24px; }
+    .feature-card { background: var(--bg-card); border: 1px solid rgba(124,58,237,0.2); border-radius: var(--radius-lg); padding: 24px; }
+    .feature-card .icon { font-size: 32px; margin-bottom: 12px; }
+    .feature-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .feature-card p { font-size: 14px; color: var(--text-muted); margin: 0; }
+    .mood-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+    .mood-tag { background: rgba(45,212,191,0.1); border: 1px solid rgba(45,212,191,0.3); color: var(--teal-400); border-radius: var(--radius-full); padding: 6px 16px; font-size: 14px; font-weight: 500; }
+    .highlight-box { background: rgba(124,58,237,0.07); border: 1px solid rgba(124,58,237,0.2); border-radius: var(--radius-lg); padding: 28px; margin: 28px 0; }
+    .steps { counter-reset: step; list-style: none; }
+    .steps li { counter-increment: step; display: flex; gap: 20px; align-items: flex-start; margin-bottom: 24px; }
+    .steps li::before { content: counter(step); min-width: 40px; height: 40px; background: var(--gradient-vibe); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 16px; flex-shrink: 0; }
+    .steps li .step-content h3 { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
+    .steps li .step-content p { font-size: 15px; color: var(--text-muted); margin: 0; }
+    .email-section { background: linear-gradient(135deg, rgba(124,58,237,0.12), rgba(45,212,191,0.07)); border: 1px solid rgba(124,58,237,0.25); border-radius: var(--radius-lg); padding: 48px 40px; text-align: center; margin-bottom: 56px; }
+    .email-section h2 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 28px; font-weight: 800; margin-bottom: 12px; }
+    .email-section p { color: var(--text-secondary); margin-bottom: 28px; }
+    .email-form { display: flex; gap: 12px; max-width: 440px; margin: 0 auto; }
+    .email-form input { flex: 1; padding: 14px 18px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); border-radius: var(--radius-full); color: white; font-size: 15px; outline: none; }
+    .email-form input:focus { border-color: var(--purple-400); }
+    .email-form button { padding: 14px 26px; background: var(--gradient-vibe); color: white; border: none; border-radius: var(--radius-full); font-size: 15px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+    .internal-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 20px; }
+    .internal-link { display: block; padding: 16px 20px; background: var(--bg-card); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-lg); color: white; text-decoration: none; font-weight: 600; font-size: 14px; transition: all 0.2s; }
+    .internal-link:hover { border-color: rgba(124,58,237,0.4); background: rgba(124,58,237,0.08); color: var(--purple-400); }
+    .internal-link .link-icon { font-size: 20px; margin-bottom: 6px; display: block; }
+    .footer { text-align: center; padding: 24px; color: var(--text-muted); font-size: 13px; border-top: 1px solid rgba(255,255,255,0.05); }
+    .footer a { color: var(--purple-400); text-decoration: none; }
+    @media (max-width: 600px) { .email-form { flex-direction: column; } .hero { padding: 48px 20px 40px; } }
+  </style>
 </head>
 <body>
 <header class="header">
-  <div class="logo-text">🎵 Vibe<span>Curate</span></div>
+  <div class="logo-text">🎵 VibeCurate</div>
   <nav class="nav-links">
-    <a href="https://vibe.dubltap.io">Try the App</a>
+    <a href="https://vibe.dubltap.io">Try Free</a>
     <a href="https://dubltap.io/blog">Blog</a>
     <a href="https://dubltap.io">dubltap.io</a>
-    <a href="https://vibe.dubltap.io" class="btn-cta">Curate My Vibe →</a>
+    <a href="https://vibe.dubltap.io" class="btn-cta">Build My Playlist →</a>
   </nav>
 </header>
-
 <section class="hero">
-  <div class="hero-badge">🎵 AI-Powered • Free to Start</div>
-  <h1>Your Mood. Your Moment.<br>Your <em>Perfect Playlist.</em></h1>
-  <p>VibeCurate is the AI music curation tool that understands exactly what you need to hear right now — and builds the playlist that matches it. No algorithm guessing. Just intention.</p>
-  <a href="https://vibe.dubltap.io" class="btn-cta" style="font-size:16px; padding:14px 32px;">Curate My Vibe Free →</a>
+  <div class="hero-badge">🎵 AI-Powered • Unlimited Free Playlists</div>
+  <h1>The Mood. The Music.<br><em>Perfectly Matched by AI.</em></h1>
+  <p>VibeCurate is the free AI playlist curator that actually understands your vibe — whether you're deep in a flow state, hitting a workout, processing a breakup, or hosting a dinner party — and builds your perfect playlist every time.</p>
+  <a href="https://vibe.dubltap.io" class="btn-cta" style="font-size:16px; padding:14px 32px;">Build My Playlist Free →</a>
 </section>
-
 <main class="content">
   <article>
     <section class="section">
       <h2>What Is <span class="accent">VibeCurate</span>?</h2>
-      <p>VibeCurate is a free AI-powered music curation tool that builds truly intentional playlists — not based on what an algorithm thinks you might like, but based on what you actually tell it you need. Describe your mood, your activity, your emotional state, or the atmosphere you're trying to create, and VibeCurate curates a playlist built around that exact moment.</p>
-      <p>Whether you need deep focus music for a 3-hour work sprint, the right energy for a first date dinner, music to cry to at 2am, or the perfect soundtrack for a solo road trip through the desert — VibeCurate gets it right because you told it exactly what you want.</p>
-      <div class="highlight-box">
-        <p>💡 <strong>Music is mood engineering.</strong> VibeCurate treats your playlist as an intentional emotional tool, not background noise. The right music at the right moment changes what you're capable of, how you feel, and who shows up in the room.</p>
-      </div>
+      <p>VibeCurate is a free AI-powered playlist curation tool that bridges the gap between "I want music that matches my energy right now" and actually finding it. Instead of scrolling Spotify for 20 minutes, you describe your mood, context, and energy — and the AI builds a perfectly curated playlist, sequenced for your specific listening moment.</p>
+      <p>Unlike algorithm-driven recommendations that just serve you more of what you already know, VibeCurate thinks like a DJ who knows you well. It understands emotional arc, energy pacing, and how different genres create different mental states — and uses all of that to build something that actually fits.</p>
+      <div class="highlight-box"><p>🎵 <strong>Music is the fastest way to shift your state.</strong> VibeCurate makes it effortless. Tell the AI your vibe and it handles the rest.</p></div>
     </section>
-
     <section class="section">
       <h2>Who Is It <span class="accent">For?</span></h2>
       <div class="feature-grid">
-        <div class="feature-card">
-          <div class="icon">💻</div>
-          <h3>Deep Work Practitioners</h3>
-          <p>Build a sonic environment that gets you into flow state and keeps you there. No more spending 20 minutes choosing music instead of working.</p>
-        </div>
-        <div class="feature-card">
-          <div class="icon">🎉</div>
-          <h3>Event Hosts</h3>
-          <p>Whether it's a dinner party, rooftop gathering, or game night — get the exact playlist for the exact vibe without the DJ budget.</p>
-        </div>
-        <div class="feature-card">
-          <div class="icon">🏃</div>
-          <h3>Athletes & Movers</h3>
-          <p>Match your music to your training phase — warmup, peak intensity, cooldown. Sound-design your performance.</p>
-        </div>
-        <div class="feature-card">
-          <div class="icon">🧘</div>
-          <h3>Mood Managers</h3>
-          <p>Use music as a tool to shift your emotional state. Curate your way out of a funk, into confidence, or into calm.</p>
-        </div>
+        <div class="feature-card"><div class="icon">💻</div><h3>Deep Workers</h3><p>Build the ultimate focus playlist that matches your work type — coding, writing, designing — without algorithm guessing.</p></div>
+        <div class="feature-card"><div class="icon">🏋️</div><h3>Athletes &amp; Gym-Goers</h3><p>Get playlists that match your workout intensity and phase — warm-up, peak effort, cool-down — all perfectly sequenced.</p></div>
+        <div class="feature-card"><div class="icon">🎉</div><h3>Party &amp; Event Hosts</h3><p>Plan a dinner party, rooftop hang, or late-night gathering playlist that flows seamlessly through the whole event.</p></div>
+        <div class="feature-card"><div class="icon">🌙</div><h3>Wind-Down Listeners</h3><p>Build the perfect evening ritual playlist — sleep prep, meditation, journaling — that actually helps you down-regulate.</p></div>
       </div>
     </section>
-
     <section class="section">
       <h2>How It <span class="accent">Works</span></h2>
       <ol class="steps">
-        <li>
-          <div class="step-content">
-            <h3>Describe your vibe</h3>
-            <p>Tell VibeCurate what you're doing, how you're feeling, what atmosphere you want to create, or what you need the music to do for you. The more specific, the better the curation.</p>
-          </div>
-        </li>
-        <li>
-          <div class="step-content">
-            <h3>AI maps your sonic profile</h3>
-            <p>VibeCurate analyzes tempo, energy, genre, instrumentation, lyrical density, and emotional register to build a cohesive arc that serves your stated intention.</p>
-          </div>
-        </li>
-        <li>
-          <div class="step-content">
-            <h3>Get your curated playlist</h3>
-            <p>Receive a playlist with track recommendations, genre descriptions, and the reasoning behind each selection — so you can explore further or refine the curation with follow-up prompts.</p>
-          </div>
-        </li>
+        <li><div class="step-content"><h3>Describe your mood and context</h3><p>Tell VibeCurate where you are, what you're doing, how you're feeling. Even a single word like "melancholy" works.</p></div></li>
+        <li><div class="step-content"><h3>Add optional filters</h3><p>BPM range, decade, genre preferences, energy level — dial in as many parameters as you want or let the AI decide.</p></div></li>
+        <li><div class="step-content"><h3>Receive your curated playlist</h3><p>VibeCurate delivers a sequenced list of tracks — with artist, title, and why each fits your vibe — ready to build in Spotify, Apple Music, or YouTube.</p></div></li>
       </ol>
     </section>
-
     <section class="section">
-      <h2>Vibe Categories <span class="accent">We Nail</span></h2>
-      <p>VibeCurate handles every sonic need across every context:</p>
-      <div class="tag-cloud">
-        <span class="tag">🧠 Deep Focus</span>
-        <span class="tag">💪 Workout Energy</span>
-        <span class="tag">🌙 Late Night Vibes</span>
-        <span class="tag">☀️ Morning Ritual</span>
-        <span class="tag">💔 Heartbreak Hours</span>
-        <span class="tag">🎉 Party Mode</span>
-        <span class="tag">🍷 Date Night</span>
-        <span class="tag">🚗 Road Trip</span>
-        <span class="tag">🧘 Meditation</span>
-        <span class="tag">✍️ Creative Flow</span>
-        <span class="tag">🌧️ Rainy Day</span>
-        <span class="tag">+ Anything You Name</span>
+      <h2>Vibes We <span class="accent">Understand</span></h2>
+      <p>VibeCurate speaks fluent mood. Here's a taste:</p>
+      <div class="mood-tags">
+        <span class="mood-tag">🌅 Golden Hour Focus</span><span class="mood-tag">🔥 Hype Train</span><span class="mood-tag">🌧️ Rainy Day Feels</span><span class="mood-tag">⚡ Pre-Game Energy</span><span class="mood-tag">🧘 Deep Calm</span><span class="mood-tag">💔 Sad Banger Hours</span><span class="mood-tag">🍷 Dinner Party Smooth</span><span class="mood-tag">🎯 Flow State</span><span class="mood-tag">🌙 Late Night Drive</span><span class="mood-tag">☕ Morning Ritual</span><span class="mood-tag">+ describe your own</span>
       </div>
     </section>
-
-    <section class="section">
-      <h2>Why <span class="accent">VibeCurate?</span></h2>
-      <p>Streaming algorithms are built to maximize engagement, not your experience. They serve what you've liked before, creating an echo chamber of your own past taste. VibeCurate breaks that loop — it meets you where you are right now, not where you were six months ago, and builds something that serves your current moment.</p>
-      <p>VibeCurate is part of the dubltap.io ecosystem — 8 AI tools built for people who approach life with intention. Free to use. No account required. Upgrade to Pro for extended playlists, cross-platform export (Spotify, Apple Music), and saved vibe profiles.</p>
-    </section>
   </article>
-
   <div class="email-section">
-    <h2>🎵 Get Your Free Signature Playlist</h2>
-    <p>Enter your email and we'll send you a personalized playlist built around your top 3 moods plus our guide to using music as a productivity tool.</p>
+    <h2>🎵 Get Weekly Vibe Drops</h2>
+    <p>Subscribe and we'll send you a curated playlist for a different vibe every week — handpicked by the AI.</p>
     <form class="email-form" onsubmit="handleEmailSubmit(event)">
       <input type="email" id="aboutEmail" placeholder="your@email.com" required>
-      <button type="submit">Curate My Vibe</button>
+      <button type="submit">Subscribe Free</button>
     </form>
   </div>
-
   <section class="section">
     <h2>Explore <span class="accent">More Tools</span></h2>
     <p>VibeCurate is one of 8 AI-powered apps in the dubltap.io ecosystem:</p>
     <div class="internal-links">
-      <a href="https://hustle.dubltap.io" class="internal-link"><span class="link-icon">🚀</span>Side Hustle Copilot</a>
       <a href="https://fork.dubltap.io" class="internal-link"><span class="link-icon">🍴</span>Bad Mutha Forker</a>
+      <a href="https://hustle.dubltap.io" class="internal-link"><span class="link-icon">🚀</span>Side Hustle Copilot</a>
       <a href="https://mind.dubltap.io" class="internal-link"><span class="link-icon">🧠</span>Mind Expander</a>
       <a href="https://maven.dubltap.io" class="internal-link"><span class="link-icon">📊</span>Market Maven</a>
       <a href="https://cliff.dubltap.io" class="internal-link"><span class="link-icon">📚</span>CLIFF NOTEZ</a>
@@ -226,30 +171,16 @@ body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(
     </div>
   </section>
 </main>
-
 <footer class="footer">
-  <p style="margin-bottom:8px;">
-    <a href="https://vibe.dubltap.io">Try the App</a> ·
-    <a href="https://dubltap.io/blog">Blog</a> ·
-    <a href="https://dubltap.io/privacy">Privacy</a> ·
-    <a href="https://dubltap.io/terms">Terms</a> ·
-    <a href="https://dubltap.io">dubltap.io</a>
-  </p>
+  <p style="margin-bottom:8px;"><a href="https://vibe.dubltap.io">Try the App</a> · <a href="https://dubltap.io/blog">Blog</a> · <a href="https://dubltap.io/privacy">Privacy</a> · <a href="https://dubltap.io/terms">Terms</a> · <a href="https://dubltap.io">dubltap.io</a></p>
   <small style="opacity:0.5;">© 2026 dubltap.io LLC — All rights reserved.</small>
 </footer>
-
 <script>
 async function handleEmailSubmit(e) {
   e.preventDefault();
   const email = document.getElementById('aboutEmail').value;
-  try {
-    await fetch('https://api.dubltap.io/api/email-capture', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({email, source: 'vibe-about', tags: ['vibe-user', 'about-page']})
-    });
-  } catch {}
-  document.querySelector('.email-form').innerHTML = '<p style="color:#a78bfa;font-weight:700;font-size:18px;">🎵 You\'re in! Check your inbox for your signature playlist.</p>';
+  try { await fetch('https://api.dubltap.io/api/email-capture', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({email, source: 'vibe-about', tags: ['vibe-user', 'about-page']}) }); } catch {}
+  document.querySelector('.email-form').innerHTML = '<p style="color:#a78bfa;font-weight:700;font-size:18px;">🎵 You\'re in! First vibe drop coming soon.</p>';
   setTimeout(() => { window.location.href = 'https://vibe.dubltap.io'; }, 2000);
 }
 </script>
