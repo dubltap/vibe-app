@@ -1595,6 +1595,37 @@
   let videoIdCache = {};
   let deezerCache = {};
   let progressInterval = null;
+
+    // ═══ Skip-Loop Protection ═══
+    let consecutiveSkips = 0;
+    const MAX_CONSECUTIVE_SKIPS = 3;
+    let lastSkipTime = 0;
+    const MIN_SKIP_INTERVAL = 2000; // 2 seconds minimum between skips
+
+    function guardedSkip(reason) {
+      var now = Date.now();
+      if (now - lastSkipTime < MIN_SKIP_INTERVAL) {
+        console.log('[SkipGuard] Debounced — too fast (' + reason + ')');
+        setPlayerStatus('Track unavailable — try another');
+        return;
+      }
+      consecutiveSkips++;
+      lastSkipTime = now;
+      if (consecutiveSkips >= MAX_CONSECUTIVE_SKIPS) {
+        console.log('[SkipGuard] Too many consecutive skips (' + consecutiveSkips + ') — stopping');
+        consecutiveSkips = 0;
+        setPlayerStatus('Multiple tracks unavailable — try a new playlist');
+        stopPlayer();
+        document.getElementById('playerPlayBtn').innerHTML = '▶';
+        return;
+      }
+      console.log('[SkipGuard] Skipping (' + reason + '), attempt ' + consecutiveSkips);
+      playerNext();
+    }
+
+    function resetSkipCount() {
+      consecutiveSkips = 0;
+    }
   
   // ═══ Initialize ═══
   function init() {
@@ -1988,8 +2019,8 @@
         setPlayerStatus('Switching to preview...');
         playDeezerFallback(dz.preview);
       } else {
-        setPlayerStatus('Skipping...');
-        setTimeout(() => playerNext(), 1500);
+        setPlayerStatus('Track unavailable');
+        guardedSkip('YouTube error + no Deezer preview');
       }
     }
   }
@@ -2084,8 +2115,8 @@
       setPlayerStatus('Preview mode · click links for full song');
       playDeezerFallback(dz.preview);
     } else {
-      setPlayerStatus('Track not available');
-      setTimeout(() => { if (playerCurrentIndex === index) playerNext(); }, 2500);
+      setPlayerStatus('Track not available \u2014 try another');
+      guardedSkip('No YouTube or Deezer source');
     }
 
     document.getElementById('playerSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -2098,6 +2129,7 @@
     audioEl.oncanplay = function() {
       audioEl.play().then(() => {
         playerIsPlaying = true;
+        resetSkipCount();
         document.getElementById('playerPlayBtn').innerHTML = '⏸';
         setVinylSpin(true);
         startProgressUpdates();
@@ -2108,10 +2140,12 @@
     audioEl.onended = function() {
       playerIsPlaying = false;
       setVinylSpin(false);
+      resetSkipCount();
       playerNext();
     };
     audioEl.onerror = function() {
-      setTimeout(() => playerNext(), 1000);
+      setPlayerStatus('Preview unavailable');
+      guardedSkip('Deezer preview error');
     };
     audioEl.load();
   }
