@@ -1953,7 +1953,10 @@
 
   // Invidious instances for video ID resolution (CORS-enabled, tested 2026-02-03)
   const INVIDIOUS_INSTANCES = [
-    'iv.melmac.space'     // Primary — confirmed working with CORS *
+    'iv.melmac.space',
+    'invidious.nerdvpn.de',
+    'inv.nadeko.net',
+    'invidious.privacyredirect.com'
   ];
 
   const PIPED_INSTANCES = [
@@ -1985,9 +1988,27 @@
 
   function onYTStateChange(event) {
     if (playerMode !== 'youtube') return;
+
+    // Ad Detection (Pro feature)
+    if (event.data === YT.PlayerState.PLAYING && ytPlayer && ytPlayer.getDuration) {
+      var adCheckDur = ytPlayer.getDuration();
+      if (adCheckDur > 0 && adCheckDur < 30) {
+        if (isPro) {
+          console.log('[AdSkip Pro] Detected likely ad (' + Math.round(adCheckDur) + 's)');
+          setPlayerStatus('Ad detected — skipping...');
+          try { ytPlayer.nextVideo(); } catch(e2) {}
+          return;
+        } else {
+          setPlayerStatus('Ad playing — Go Pro to auto-skip ads');
+        }
+      }
+    }
+
     switch (event.data) {
       case YT.PlayerState.PLAYING:
         playerIsPlaying = true;
+        resetSkipCount();
+        setPlayerStatus('');
         document.getElementById('playerPlayBtn').innerHTML = '⏸';
         setVinylSpin(true);
         startProgressUpdates();
@@ -2110,9 +2131,39 @@
       playerMode = 'youtube';
       setPlayerStatus('');
       ytPlayer.loadVideoById(videoId);
+    } else if (!videoId && ytReady && PIPED_INSTANCES.length > 0) {
+      setPlayerStatus('Retrying full song lookup...');
+      var retryId = null;
+      try {
+        var pipedRetries = PIPED_INSTANCES.map(function(host) {
+          var ctrl = new AbortController();
+          var t = setTimeout(function(){ ctrl.abort(); }, 4000);
+          return fetch('https://'+host+'/search?q='+encodeURIComponent(q)+'&filter=music_songs',{signal:ctrl.signal})
+            .then(function(res){clearTimeout(t);if(!res.ok)throw new Error('HTTP');return res.json();})
+            .then(function(data){
+              if(!data||!data.items||!data.items.length)throw new Error('empty');
+              var m2=data.items[0].url&&data.items[0].url.match(/[?&]v=([a-zA-Z0-9_-]{11})/);
+              if(!m2)throw new Error('no id');return m2[1];
+            });
+        });
+        retryId = await Promise.any(pipedRetries).catch(function(){return null;});
+      } catch(e3) { retryId = null; }
+      if (retryId) {
+        videoIdCache[q] = retryId;
+        playerMode = 'youtube';
+        setPlayerStatus('');
+        ytPlayer.loadVideoById(retryId);
+      } else if (dz && dz.preview) {
+        playerMode = 'deezer';
+        setPlayerStatus('30s preview — YouTube unavailable for this track');
+        playDeezerFallback(dz.preview);
+      } else {
+        setPlayerStatus('Track not available — try another');
+        guardedSkip('No source after retry');
+      }
     } else if (dz && dz.preview) {
       playerMode = 'deezer';
-      setPlayerStatus('Preview mode · click links for full song');
+      setPlayerStatus('30s preview — YouTube unavailable for this track');
       playDeezerFallback(dz.preview);
     } else {
       setPlayerStatus('Track not available \u2014 try another');
