@@ -245,7 +245,7 @@
       z-index: 1;
       max-width: 900px;
       margin: 0 auto;
-      padding: var(--phi-xl) var(--phi-lg) var(--phi-3xl);
+      padding: var(--phi-xl) var(--phi-lg) calc(var(--phi-3xl) + 180px);
     }
     
     /* ═══ Hero ═══ */
@@ -953,18 +953,64 @@
       font-weight: 700;
     }
     
-    /* ═══ Inline Player — Groovy Dark Mode ═══ */
+    /* ═══ Sticky Bottom Player — Compact with Big Vinyl ═══ */
     .player-section {
       display: none;
-      margin-bottom: var(--phi-lg);
+      position: fixed;
+      bottom: 32px;
+      left: 0;
+      right: 0;
+      z-index: 8000;
       background: linear-gradient(135deg, #12091e 0%, #0d1520 40%, #160b26 100%);
-      border: 1px solid rgba(124, 58, 237, 0.2);
-      border-radius: 20px;
-      overflow: hidden;
-      animation: fadeUp 0.4s ease-out;
-      position: relative;
+      border-top: 1px solid rgba(124, 58, 237, 0.25);
+      box-shadow: 0 -4px 30px rgba(0,0,0,0.5), 0 0 60px rgba(124,58,237,0.1);
+      overflow: visible;
+      transition: transform 0.35s cubic-bezier(.4,0,.2,1), opacity 0.3s;
     }
-    .player-section.active { display: block; }
+    .player-section.active {
+      display: block;
+      animation: playerSlideUp 0.4s ease-out;
+    }
+    .player-section.minimized .player-inner { padding: 6px 16px; gap: 12px; }
+    .player-section.minimized .player-vinyl-wrap { width: 42px; height: 42px; }
+    .player-section.minimized .player-vinyl { width: 42px; height: 42px; }
+    .player-section.minimized .player-vinyl-hole { width: 22px; height: 22px; }
+    .player-section.minimized .player-body { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .player-section.minimized .player-track-name { font-size: 0.82rem; }
+    .player-section.minimized .player-track-artist,
+    .player-section.minimized .player-track-counter,
+    .player-section.minimized .player-progress-wrap,
+    .player-section.minimized .player-time-row,
+    .player-section.minimized .player-links,
+    .player-section.minimized .player-status,
+    .player-section.minimized .player-eq { display: none; }
+    .player-section.minimized .player-controls { margin-top: 0; }
+    .player-section.minimized .player-ctrl.main { width: 34px; height: 34px; font-size: 1rem; }
+    .player-section.minimized .player-ctrl { width: 28px; height: 28px; font-size: 0.7rem; }
+    .player-minimize-btn {
+      position: absolute;
+      top: -14px;
+      right: 20px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid rgba(124,58,237,0.3);
+      background: #1a1028;
+      color: rgba(255,255,255,0.6);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      z-index: 2;
+      transition: all 0.2s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+    .player-minimize-btn:hover { background: rgba(124,58,237,0.3); color: #fff; }
+    @keyframes playerSlideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
     .player-section::before {
       content: '';
       position: absolute;
@@ -977,8 +1023,8 @@
     .player-inner {
       display: flex;
       align-items: center;
-      gap: 22px;
-      padding: 22px 24px;
+      gap: 16px;
+      padding: 12px 20px;
       position: relative;
       z-index: 1;
     }
@@ -986,13 +1032,14 @@
     /* ── Spinning vinyl with album art center ── */
     .player-vinyl-wrap {
       position: relative;
-      width: 110px;
-      height: 110px;
+      width: 140px;
+      height: 140px;
       flex-shrink: 0;
+      margin-top: -50px;
     }
     .player-vinyl {
-      width: 110px;
-      height: 110px;
+      width: 140px;
+      height: 140px;
       border-radius: 50%;
       background: conic-gradient(from 0deg, #111 0deg, #222 20deg, #111 40deg, #1a1a1a 60deg, #222 80deg, #111 100deg, #1d1d1d 120deg, #222 140deg, #111 160deg, #1a1a1a 180deg, #222 200deg, #111 220deg, #1d1d1d 240deg, #222 260deg, #111 280deg, #1a1a1a 300deg, #222 320deg, #111 340deg, #1a1a1a 360deg);
       display: flex;
@@ -1003,8 +1050,8 @@
     .player-vinyl.spinning { animation: vinylSpin 2.8s linear infinite; }
     @keyframes vinylSpin { to { transform: rotate(360deg); } }
     .player-vinyl-hole {
-      width: 56px;
-      height: 56px;
+      width: 70px;
+      height: 70px;
       border-radius: 50%;
       overflow: hidden;
       border: 2px solid rgba(255,255,255,0.06);
@@ -1052,7 +1099,7 @@
     .player-track-name {
       font-family: var(--font-display);
       font-weight: 700;
-      font-size: 1.05rem;
+      font-size: 0.92rem;
       color: #fff;
       white-space: nowrap;
       overflow: hidden;
@@ -1073,10 +1120,10 @@
     /* ── Glowing progress bar ── */
     .player-progress-wrap {
       width: 100%;
-      height: 5px;
+      height: 4px;
       background: rgba(255,255,255,0.07);
       border-radius: 3px;
-      margin-top: 14px;
+      margin-top: 8px;
       cursor: pointer;
       overflow: visible;
       position: relative;
@@ -1117,12 +1164,12 @@
     .player-controls {
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-top: 14px;
+      gap: 6px;
+      margin-top: 8px;
     }
     .player-ctrl {
-      width: 36px;
-      height: 36px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
       border: 1.5px solid rgba(255,255,255,0.12);
       background: rgba(255,255,255,0.04);
@@ -1140,12 +1187,12 @@
       color: #fff;
     }
     .player-ctrl.main {
-      width: 50px;
-      height: 50px;
+      width: 40px;
+      height: 40px;
       background: linear-gradient(135deg, var(--purple-vibe), var(--sunset-coral));
       border: none;
       color: white;
-      font-size: 1.25rem;
+      font-size: 1rem;
       box-shadow: 0 4px 24px rgba(124,58,237,0.4), 0 0 0 3px rgba(124,58,237,0.15);
     }
     .player-ctrl.main:hover {
@@ -1157,7 +1204,7 @@
     .player-links {
       display: flex;
       gap: 6px;
-      margin-top: 10px;
+      margin-top: 4px;
       flex-wrap: wrap;
     }
     .player-links a {
@@ -1437,6 +1484,7 @@
       </div>
       <!-- Inline Player — Groovy -->
       <div class="player-section" id="playerSection">
+            <button class="player-minimize-btn" onclick="togglePlayerMinimize()" id="playerMinBtn" title="Minimize player">▼</button>
         <div class="player-inner">
           <div class="player-vinyl-wrap">
             <div class="player-vinyl" id="playerVinyl">
@@ -2368,7 +2416,21 @@
   }
 
   // ── Transport Controls ──
-  function playerToggle() {
+  function togglePlayerMinimize() {
+      var player = document.getElementById('playerSection');
+      var btn = document.getElementById('playerMinBtn');
+      if (player.classList.contains('minimized')) {
+        player.classList.remove('minimized');
+        btn.innerHTML = '▼';
+        btn.title = 'Minimize player';
+      } else {
+        player.classList.add('minimized');
+        btn.innerHTML = '▲';
+        btn.title = 'Expand player';
+      }
+    }
+
+    function playerToggle() {
     if (playerCurrentIndex === -1) { playAll(); return; }
 
     if (playerMode === 'youtube' && ytPlayer) {
