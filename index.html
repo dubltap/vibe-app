@@ -7,7 +7,7 @@
   <meta name="description" content="Tell us the mood. We'll find the music. AI-powered playlist curation that understands your vibe. Free unlimited playlists.">
   
   <!-- Open Graph -->
-  <meta property="og:title" content="VibeCurate | AI-Powered Playlist Curation">
+  <meta property="og:title" content="VibeCuratehh | AI-Powered Playlist Curation">
   <meta property="og:description" content="Tell us the mood. We'll find the music. Free unlimited AI-curated playlists.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://vibe.dubltap.io">
@@ -1811,13 +1811,14 @@
     const prompt = document.getElementById('vibeInput').value.trim();
     if (!prompt || isGenerating) return;
     
-    // Check email gate
+    // Check email gate — must return to prevent generation behind modal
     if (!isRegistered && playlistsCreated >= EMAIL_GATE_AFTER) {
       showEmailModal();
+      return;
     }
-    
-    // Check free limit
-    if (!isPro && playlistsCreated >= FREE_LIMIT) {
+
+    // Check free limit (only applies to registered non-pro users)
+    if (!isPro && isRegistered && playlistsCreated >= FREE_LIMIT) {
       showUpgradeModal();
       return;
     }
@@ -2035,19 +2036,13 @@
   // PLAYER — YouTube Full Songs + Deezer Album Art
   // ═══════════════════════════════════════════════════════════════
 
-  // Invidious instances for video ID resolution (CORS-enabled, tested 2026-02-03)
-  const INVIDIOUS_INSTANCES = [
-    'iv.melmac.space',
-    'invidious.nerdvpn.de',
-    'inv.nadeko.net',
-    'invidious.privacyredirect.com'
-  ];
+  // Invidious instances for video ID resolution (CORS-enabled, tested 2026-03-02)
+    const INVIDIOUS_INSTANCES = [
+      'iv.melmac.space'
+    ];
 
-  const PIPED_INSTANCES = [
-    'pipedapi.kavin.rocks',
-    'pipedapi.adminforge.de',
-    'pipedapi.r4fo.com'
-  ];
+    // Piped instances — none currently have CORS; kept as fallback structure
+    const PIPED_INSTANCES = [];
 
   // YouTube IFrame API ready callback (global)
   window.onYouTubeIframeAPIReady = function() {
