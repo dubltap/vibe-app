@@ -2097,14 +2097,20 @@
         document.getElementById('playerPlayBtn').innerHTML = '⏸';
         setVinylSpin(true);
         startProgressUpdates();
+        startSilentKeepAlive();
+        requestWakeLock();
         break;
       case YT.PlayerState.PAUSED:
         playerIsPlaying = false;
         document.getElementById('playerPlayBtn').innerHTML = '▶';
         setVinylSpin(false);
+        stopSilentKeepAlive();
+        releaseWakeLock();
         break;
       case YT.PlayerState.ENDED:
         playerIsPlaying = false;
+        stopSilentKeepAlive();
+        releaseWakeLock();
         setVinylSpin(false);
         playerNext();
         break;
@@ -2138,6 +2144,8 @@
     try { if (audioEl) { audioEl.pause(); audioEl.src = ''; } } catch(e) {}
     setVinylSpin(false);
     playerMode = null;
+    stopSilentKeepAlive();
+    releaseWakeLock();
   }
 
   function resetPlayer() {
@@ -2269,6 +2277,7 @@
         document.getElementById('playerPlayBtn').innerHTML = '⏸';
         setVinylSpin(true);
         startProgressUpdates();
+        requestWakeLock();
       }).catch(() => {
         document.getElementById('playerPlayBtn').innerHTML = '▶';
       });
@@ -2278,6 +2287,7 @@
       setVinylSpin(false);
       resetSkipCount();
       playerNext();
+      releaseWakeLock();
     };
     audioEl.onerror = function() {
       setPlayerStatus('Preview unavailable');
@@ -2300,7 +2310,79 @@
     if (card) {
       card.classList.add('now-playing');
       card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      
+
+
+      
+      
     }
+
+    // --- Background Playback: Media Session API ---
+    if ('mediaSession' in navigator) {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: song.title,
+        artist: song.artist,
+        album: 'VibeCurate'
+      });
+      navigator.mediaSession.setActionHandler('play', () => { togglePlayPause(); });
+      navigator.mediaSession.setActionHandler('pause', () => { togglePlayPause(); });
+      navigator.mediaSession.setActionHandler('nexttrack', () => { playNext(); });
+      navigator.mediaSession.setActionHandler('previoustrack', () => { playPrevious(); });
+    }
+    
+
+
+    // --- Background Playback: Keep audio alive when screen is off ---
+    // Silent audio keepalive: plays a near-silent loop on the <audio> element
+    // when YouTube iframe is active, preventing the browser from suspending audio.
+    let silentKeepAliveActive = false;
+    function startSilentKeepAlive() {
+      const audioEl = document.getElementById('audioPreview');
+      if (!audioEl || silentKeepAliveActive) return;
+      silentKeepAliveActive = true;
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const oscillator = ctx.createOscillator();
+      const gain = ctx.createGain();
+      gain.gain.value = 0.001; // near-silent
+      oscillator.connect(gain);
+      gain.connect(ctx.destination);
+      oscillator.start();
+  // Capture to audio element via MediaStream for OS audio session
+      const dest = ctx.createMediaStreamDestination();
+      gain.connect(dest);
+      audioEl.srcObject = dest.stream;
+      audioEl.play().catch(() => {});
+    }
+
+    function stopSilentKeepAlive() {
+      silentKeepAliveActive = false;
+      const audioEl = document.getElementById('audioPreview');
+      if (audioEl && audioEl.srcObject) {
+        audioEl.srcObject.getTracks().forEach(t => t.stop());
+        audioEl.srcObject = null;
+      }
+    }
+
+    // Wake Lock: prevent device from sleeping during playback
+    let wakeLock = null;
+    async function requestWakeLock() {
+      try {
+        if ('wakeLock' in navigator) {
+          wakeLock = await navigator.wakeLock.request('screen');
+          wakeLock.addEventListener('release', () => { wakeLock = null; });
+        }
+      } catch (e) { /* Wake Lock not supported or denied */ }
+    }
+    function releaseWakeLock() {
+      if (wakeLock) { wakeLock.release(); wakeLock = null; }
+    }
+
+    // Re-acquire wake lock when page becomes visible again
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible' && isPlaying) {
+        requestWakeLock();
+      }
+    });
   }
 
   // ── Video ID Resolution via Invidious ──
@@ -2473,8 +2555,12 @@
     if (playerMode === 'youtube' && ytPlayer) {
       if (playerIsPlaying) {
         ytPlayer.pauseVideo();
+        stopSilentKeepAlive();
+        releaseWakeLock();
       } else {
         ytPlayer.playVideo();
+        startSilentKeepAlive();
+        requestWakeLock();
       }
     } else if (playerMode === 'deezer' && audioEl) {
       if (playerIsPlaying) {
@@ -2483,12 +2569,14 @@
         document.getElementById('playerPlayBtn').innerHTML = '▶';
         setVinylSpin(false);
         if (progressInterval) clearInterval(progressInterval);
+        releaseWakeLock();
       } else {
         audioEl.play().then(() => {
           playerIsPlaying = true;
           document.getElementById('playerPlayBtn').innerHTML = '⏸';
           setVinylSpin(true);
           startProgressUpdates();
+          requestWakeLock();
         }).catch(() => {});
       }
     }
