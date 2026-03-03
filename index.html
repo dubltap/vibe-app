@@ -7,7 +7,7 @@
   <meta name="description" content="Tell us the mood. We'll find the music. AI-powered playlist curation that understands your vibe. Free unlimited playlists.">
   
   <!-- Open Graph -->
-  <meta property="og:title" content="VibeCuratehh | AI-Powered Playlist Curation">
+  <meta property="og:title" content="VibeCuratehh | AI-Powehhred Playlist Curation">
   <meta property="og:description" content="Tell us the mood. We'll find the music. Free unlimited AI-curated playlists.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://vibe.dubltap.io">
@@ -1883,10 +1883,6 @@
       updateUI();
       displayPlaylist(prompt, songs);
 
-            // Show email capture after first playlist if not registered
-            if (!userEmail && playlistsCreated === 1) {
-                      setTimeout(() => showEmailModal(), 2000);
-            }
       
     } catch (error) {
       console.error('Generation error:', error);
@@ -2311,73 +2307,66 @@
       
     }
 
-    // --- Background Playback: Media Session API ---
+    // Media Session API
     if ('mediaSession' in navigator) {
       navigator.mediaSession.metadata = new MediaMetadata({
         title: song.title,
         artist: song.artist,
         album: 'VibeCurate'
       });
-      navigator.mediaSession.setActionHandler('play', () => { togglePlayPause(); });
-      navigator.mediaSession.setActionHandler('pause', () => { togglePlayPause(); });
-      navigator.mediaSession.setActionHandler('nexttrack', () => { playNext(); });
-      navigator.mediaSession.setActionHandler('previoustrack', () => { playPrevious(); });
+      navigator.mediaSession.setActionHandler('play', () => { playerToggle(); });
+      navigator.mediaSession.setActionHandler('pause', () => { playerToggle(); });
+      navigator.mediaSession.setActionHandler('nexttrack', () => { playerNext(); });
+      navigator.mediaSession.setActionHandler('previoustrack', () => { playerPrev(); });
     }
-    
-
-
-    // --- Background Playback: Keep audio alive when screen is off ---
-    // Silent audio keepalive: plays a near-silent loop on the <audio> element
-    // when YouTube iframe is active, preventing the browser from suspending audio.
-    let silentKeepAliveActive = false;
-    function startSilentKeepAlive() {
-      const audioEl = document.getElementById('audioPreview');
-      if (!audioEl || silentKeepAliveActive) return;
-      silentKeepAliveActive = true;
-      const ctx = new (window.AudioContext || window.webkitAudioContext)();
-      const oscillator = ctx.createOscillator();
-      const gain = ctx.createGain();
-      gain.gain.value = 0.001; // near-silent
-      oscillator.connect(gain);
-      gain.connect(ctx.destination);
-      oscillator.start();
-  // Capture to audio element via MediaStream for OS audio session
-      const dest = ctx.createMediaStreamDestination();
-      gain.connect(dest);
-      audioEl.srcObject = dest.stream;
-      audioEl.play().catch(() => {});
-    }
-
-    function stopSilentKeepAlive() {
-      silentKeepAliveActive = false;
-      const audioEl = document.getElementById('audioPreview');
-      if (audioEl && audioEl.srcObject) {
-        audioEl.srcObject.getTracks().forEach(t => t.stop());
-        audioEl.srcObject = null;
-      }
-    }
-
-    // Wake Lock: prevent device from sleeping during playback
-    let wakeLock = null;
-    async function requestWakeLock() {
-      try {
-        if ('wakeLock' in navigator) {
-          wakeLock = await navigator.wakeLock.request('screen');
-          wakeLock.addEventListener('release', () => { wakeLock = null; });
-        }
-      } catch (e) { /* Wake Lock not supported or denied */ }
-    }
-    function releaseWakeLock() {
-      if (wakeLock) { wakeLock.release(); wakeLock = null; }
-    }
-
-    // Re-acquire wake lock when page becomes visible again
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'visible' && isPlaying) {
-        requestWakeLock();
-      }
-    });
   }
+
+  // --- Background Playback: Keep audio alive when screen is off ---
+  let silentKeepAliveActive = false;
+  function startSilentKeepAlive() {
+    const audioEl = document.getElementById('audioPreview');
+    if (!audioEl || silentKeepAliveActive) return;
+    silentKeepAliveActive = true;
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = ctx.createOscillator();
+    const gain = ctx.createGain();
+    gain.gain.value = 0.001;
+    oscillator.connect(gain);
+    gain.connect(ctx.destination);
+    oscillator.start();
+    const dest = ctx.createMediaStreamDestination();
+    gain.connect(dest);
+    audioEl.srcObject = dest.stream;
+    audioEl.play().catch(() => {});
+  }
+
+  function stopSilentKeepAlive() {
+    silentKeepAliveActive = false;
+    const audioEl = document.getElementById('audioPreview');
+    if (audioEl && audioEl.srcObject) {
+      audioEl.srcObject.getTracks().forEach(t => t.stop());
+      audioEl.srcObject = null;
+    }
+  }
+
+  let wakeLock = null;
+  async function requestWakeLock() {
+    try {
+      if ('wakeLock' in navigator) {
+        wakeLock = await navigator.wakeLock.request('screen');
+        wakeLock.addEventListener('release', () => { wakeLock = null; });
+      }
+    } catch (e) { /* Wake Lock not supported or denied */ }
+  }
+  function releaseWakeLock() {
+    if (wakeLock) { wakeLock.release(); wakeLock = null; }
+  }
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && playerIsPlaying) {
+      requestWakeLock();
+    }
+  });
 
   // ── Video ID Resolution via Invidious ──
   async function resolveVideoId(artist, title) {
