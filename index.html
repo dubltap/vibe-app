@@ -1673,6 +1673,7 @@
   let ytReady = false;
   let audioEl = null;
   let videoIdCache = {};
+      let audioUrlCache = {};
   let deezerCache = {};
   let progressInterval = null;
 
@@ -2209,52 +2210,85 @@
     if (dz && dz.deezerLink) links += `<a href="${dz.deezerLink}" target="_blank">Deezer ↗</a>`;
     document.getElementById('playerLinks').innerHTML = links;
 
-    // Play via YouTube (full song) or Deezer fallback (30s preview)
-    if (videoId && ytReady) {
-      playerMode = 'youtube';
-      setPlayerStatus('');
-      ytPlayer.loadVideoById(videoId);
-    } else if (!videoId && ytReady && PIPED_INSTANCES.length > 0) {
-      setPlayerStatus('Retrying full song lookup...');
-      var retryId = null;
-      try {
-        var pipedRetries = PIPED_INSTANCES.map(function(host) {
-          var ctrl = new AbortController();
-          var t = setTimeout(function(){ ctrl.abort(); }, 4000);
-          return fetch('https://'+host+'/search?q='+encodeURIComponent(q)+'&filter=music_songs',{signal:ctrl.signal})
-            .then(function(res){clearTimeout(t);if(!res.ok)throw new Error('HTTP');return res.json();})
-            .then(function(data){
-              if(!data||!data.items||!data.items.length)throw new Error('empty');
-              var m2=data.items[0].url&&data.items[0].url.match(/[?&]v=([a-zA-Z0-9_-]{11})/);
-              if(!m2)throw new Error('no id');return m2[1];
-            });
-        });
-        retryId = await Promise.any(pipedRetries).catch(function(){return null;});
-      } catch(e3) { retryId = null; }
-      if (retryId) {
-        videoIdCache[q] = retryId;
-        playerMode = 'youtube';
-        setPlayerStatus('');
-        ytPlayer.loadVideoById(retryId);
+      // Play priority: Direct audio (survives lock screen) → YouTube iframe → Deezer preview
+      if (videoId) {
+        setPlayerStatus('Loading full song...');
+        const audioData = await resolveAudioUrl(videoId);
+        if (audioData && audioData.url) {
+          audioData._videoId = videoId; // stash for fallback
+          playDirectAudio(audioData);
+        } else if (ytReady) {
+          playerMode = 'youtube';
+          setPlayerStatus('');
+          ytPlayer.loadVideoById(videoId);
+        } else if (dz && dz.preview) {
+          playerMode = 'deezer';
+          setPlayerStatus('30s preview');
+          playDeezerFallback(dz.preview);
+        } else {
+          setPlayerStatus('Track not available');
+          guardedSkip('No source found');
+        }
       } else if (dz && dz.preview) {
         playerMode = 'deezer';
-        setPlayerStatus('30s preview — YouTube unavailable for this track');
+        setPlayerStatus('30s preview \u2014 full song unavailable');
         playDeezerFallback(dz.preview);
       } else {
-        setPlayerStatus('Track not available — try another');
-        guardedSkip('No source after retry');
+        setPlayerStatus('Track not available \u2014 try another');
+        guardedSkip('No YouTube or Deezer source');
       }
-    } else if (dz && dz.preview) {
-      playerMode = 'deezer';
-      setPlayerStatus('30s preview — YouTube unavailable for this track');
-      playDeezerFallback(dz.preview);
-    } else {
-      setPlayerStatus('Track not available \u2014 try another');
-      guardedSkip('No YouTube or Deezer source');
-    }
 
     document.getElementById('playerSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
+
+
+    function playDirectAudio(audioData) {
+      audioEl = document.getElementById('audioPreview');
+      audioEl.src = audioData.url;
+      audioEl.volume = 0.85;
+      playerMode = 'direct';
+      audioEl.oncanplay = function() {
+        audioEl.play().then(() => {
+          playerIsPlaying = true;
+          resetSkipCount();
+          document.getElementById('playerPlayBtn').innerHTML = '⏸';
+          setVinylSpin(true);
+          startProgressUpdates();
+          requestWakeLock();
+          setPlayerStatus('');
+        }).catch(() => {
+          // Direct audio failed, fall back to YouTube iframe
+          setPlayerStatus('Trying YouTube player...');
+          playViaYouTube(audioData._videoId);
+        });
+      };
+      audioEl.onended = function() {
+        playerIsPlaying = false;
+        setVinylSpin(false);
+        resetSkipCount();
+        playerNext();
+        releaseWakeLock();
+      };
+      audioEl.onerror = function() {
+        // Direct audio failed, fall back to YouTube iframe
+        if (audioData._videoId && ytReady) {
+          setPlayerStatus('Switching to YouTube player...');
+          playViaYouTube(audioData._videoId);
+        } else {
+          setPlayerStatus('Track unavailable');
+          guardedSkip('Direct audio + YT both failed');
+        }
+      };
+      audioEl.load();
+    }
+
+    function playViaYouTube(videoId) {
+      if (videoId && ytReady) {
+        playerMode = 'youtube';
+        setPlayerStatus('');
+        ytPlayer.loadVideoById(videoId);
+      }
+    }
 
   function playDeezerFallback(previewUrl) {
     audioEl = document.getElementById('audioPreview');
@@ -2367,6 +2401,30 @@
       requestWakeLock();
     }
   });
+
+    // ── Direct Audio URL Resolution via Backend ──
+    async function resolveAudioUrl(videoId) {
+      if (!videoId) return null;
+      const cacheKey = 'audio_' + videoId;
+      if (audioUrlCache[cacheKey] && audioUrlCache[cacheKey].expires > Date.now()) {
+        return audioUrlCache[cacheKey];
+      }
+      try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 8000);
+        const res = await fetch(`${API_BASE}/api/youtube-audio?v=${videoId}`, { signal: controller.signal });
+        clearTimeout(timeout);
+        if (!res.ok) return null;
+        const data = await res.json();
+        if (data && data.url) {
+          audioUrlCache[cacheKey] = data;
+          return data;
+        }
+        return null;
+      } catch(e) {
+        return null;
+      }
+    }
 
   // ── Video ID Resolution via Invidious ──
   async function resolveVideoId(artist, title) {
@@ -2487,7 +2545,7 @@
       if (playerMode === 'youtube' && ytPlayer && ytPlayer.getCurrentTime) {
         current = ytPlayer.getCurrentTime() || 0;
         duration = ytPlayer.getDuration() || 0;
-      } else if (playerMode === 'deezer' && audioEl) {
+      } else if ((playerMode === 'deezer' || playerMode === 'direct') && audioEl) {
         current = audioEl.currentTime || 0;
         duration = audioEl.duration || 0;
       }
@@ -2512,7 +2570,7 @@
     const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
     if (playerMode === 'youtube' && ytPlayer && ytPlayer.getDuration) {
       ytPlayer.seekTo(pct * ytPlayer.getDuration(), true);
-    } else if (playerMode === 'deezer' && audioEl && audioEl.duration) {
+    } else if ((playerMode === 'deezer' || playerMode === 'direct') && audioEl && audioEl.duration) {
       audioEl.currentTime = pct * audioEl.duration;
     }
   }
@@ -2544,6 +2602,23 @@
         ytPlayer.playVideo();
         startSilentKeepAlive();
         requestWakeLock();
+      }
+      } else if (playerMode === 'direct' && audioEl) {
+      if (playerIsPlaying) {
+        audioEl.pause();
+        playerIsPlaying = false;
+        document.getElementById('playerPlayBtn').innerHTML = '▶';
+        setVinylSpin(false);
+        if (progressInterval) clearInterval(progressInterval);
+        releaseWakeLock();
+      } else {
+        audioEl.play().then(() => {
+          playerIsPlaying = true;
+          document.getElementById('playerPlayBtn').innerHTML = '⏸';
+          setVinylSpin(true);
+          startProgressUpdates();
+          requestWakeLock();
+        }).catch(() => {});
       }
     } else if (playerMode === 'deezer' && audioEl) {
       if (playerIsPlaying) {
