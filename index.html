@@ -7,7 +7,7 @@
   <meta name="description" content="Tell us the mood. We'll find the music. AI-powered playlist curation that understands your vibe. Free unlimited playlists.">
   
   <!-- Open Graph -->
-  <meta property="og:title" content="VibeCuratehh | AI-Powehhred Playlist Curation">
+  <meta property="og:title" content="VibeCuratehh |h AI-Powehhred Playlist Curation">
   <meta property="og:description" content="Tell us the mood. We'll find the music. Free unlimited AI-curated playlists.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://vibe.dubltap.io">
@@ -2210,31 +2210,16 @@
     if (dz && dz.deezerLink) links += `<a href="${dz.deezerLink}" target="_blank">Deezer ↗</a>`;
     document.getElementById('playerLinks').innerHTML = links;
 
-      // Play priority: Direct audio (survives lock screen) → YouTube iframe → Deezer preview
+      // Play priority: Direct audio (lock screen safe) → YouTube iframe → Deezer preview
       if (videoId) {
         setPlayerStatus('Loading full song...');
-        const audioData = await resolveAudioUrl(videoId);
-        if (audioData && audioData.url) {
-          audioData._videoId = videoId; // stash for fallback
-          playDirectAudio(audioData);
-        } else if (ytReady) {
-          playerMode = 'youtube';
-          setPlayerStatus('');
-          ytPlayer.loadVideoById(videoId);
-        } else if (dz && dz.preview) {
-          playerMode = 'deezer';
-          setPlayerStatus('30s preview');
-          playDeezerFallback(dz.preview);
-        } else {
-          setPlayerStatus('Track not available');
-          guardedSkip('No source found');
-        }
+        playDirectAudio(videoId);
       } else if (dz && dz.preview) {
         playerMode = 'deezer';
-        setPlayerStatus('30s preview \u2014 full song unavailable');
+        setPlayerStatus('30s preview — full song unavailable');
         playDeezerFallback(dz.preview);
       } else {
-        setPlayerStatus('Track not available \u2014 try another');
+        setPlayerStatus('Track not available — try another');
         guardedSkip('No YouTube or Deezer source');
       }
 
@@ -2242,9 +2227,9 @@
   }
 
 
-    function playDirectAudio(audioData) {
+    function playDirectAudio(videoId) {
       audioEl = document.getElementById('audioPreview');
-      audioEl.src = audioData.url;
+      audioEl.src = API_BASE + '/api/youtube-audio/stream?v=' + videoId;
       audioEl.volume = 0.85;
       playerMode = 'direct';
       audioEl.oncanplay = function() {
@@ -2257,9 +2242,10 @@
           requestWakeLock();
           setPlayerStatus('');
         }).catch(() => {
-          // Direct audio failed, fall back to YouTube iframe
-          setPlayerStatus('Trying YouTube player...');
-          playViaYouTube(audioData._videoId);
+          if (videoId && ytReady) {
+            playerMode = 'youtube';
+            ytPlayer.loadVideoById(videoId);
+          }
         });
       };
       audioEl.onended = function() {
@@ -2270,13 +2256,13 @@
         releaseWakeLock();
       };
       audioEl.onerror = function() {
-        // Direct audio failed, fall back to YouTube iframe
-        if (audioData._videoId && ytReady) {
-          setPlayerStatus('Switching to YouTube player...');
-          playViaYouTube(audioData._videoId);
+        if (videoId && ytReady) {
+          setPlayerStatus('Switching to YouTube...');
+          playerMode = 'youtube';
+          ytPlayer.loadVideoById(videoId);
         } else {
           setPlayerStatus('Track unavailable');
-          guardedSkip('Direct audio + YT both failed');
+          guardedSkip('Direct audio failed');
         }
       };
       audioEl.load();
