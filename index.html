@@ -2177,7 +2177,7 @@
     playTrack(0);
   }
 
-  async function playTrack(index) {
+  function playTrack(index) {
     if (!currentPlaylist || index < 0 || index >= currentPlaylist.songs.length) return;
 
     const song = currentPlaylist.songs[index];
@@ -2185,47 +2185,99 @@
     stopPlayer();
     updatePlayerUI(song, index);
     setPlayerStatus('Finding track...');
-      // Claim audio element on user gesture BEFORE async work
-      audioEl = document.getElementById('audioPreview');
-      audioEl.src = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=';
-      audioEl.play().then(function() { audioEl.pause(); }).catch(function() {});
 
-    const q = `${song.title} ${song.artist}`;
+    // CRITICAL: Claim and unlock audio element on user gesture IMMEDIATELY
+    audioEl = document.getElementById('audioPreview');
+    playerMode = 'direct';
+    audioEl.src = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=';
+    var unlockPromise = audioEl.play();
+    if (unlockPromise) unlockPromise.catch(function(){});
 
-    // Parallel resolve: Deezer (album art) + YouTube (video ID)
-    const deezerProm = deezerCache[q]
+    var q = song.title + ' ' + song.artist;
+
+    // Resolve video ID and art in background — do NOT await before playing
+    var deezerProm = deezerCache[q]
       ? Promise.resolve(deezerCache[q])
-      : resolveDeezerTrack(song.artist, song.title).then(d => { if (d) deezerCache[q] = d; return d; });
-    const videoProm = resolveVideoId(song.artist, song.title);
+      : resolveDeezerTrack(song.artist, song.title).then(function(d) { if (d) deezerCache[q] = d; return d; });
 
-    const [dz, videoId] = await Promise.all([deezerProm, videoProm]);
-
-    // Show album art
-    if (dz && dz.cover) {
-      document.getElementById('playerArt').innerHTML = `<img src="${dz.cover}" alt="Art" onerror="this.parentNode.innerHTML='<span class=vinyl-icon>🎵</span>'">`;
-    } else {
-      document.getElementById('playerArt').innerHTML = '<span class="vinyl-icon">🎵</span>';
-    }
-
-    // Streaming links
-    const searchQ = encodeURIComponent(q);
-    let links = `<a href="https://www.youtube.com/results?search_query=${searchQ}" target="_blank">YouTube ↗</a>`;
-    links += `<a href="https://open.spotify.com/search/${searchQ}" target="_blank">Spotify ↗</a>`;
-    if (dz && dz.deezerLink) links += `<a href="${dz.deezerLink}" target="_blank">Deezer ↗</a>`;
-    document.getElementById('playerLinks').innerHTML = links;
-
-      // Play priority: Direct audio (lock screen safe) → Deezer preview
+    resolveVideoId(song.artist, song.title).then(function(videoId) {
       if (videoId) {
-        setPlayerStatus('Loading full song...');
-        playDirectAudio(videoId);
-      } else if (dz && dz.preview) {
-        playerMode = 'deezer';
-        setPlayerStatus('30s preview — full song unavailable');
-        playDeezerFallback(dz.preview);
+        setPlayerStatus('Buffering...');
+        audioEl.onended = function() {
+          playerIsPlaying = false;
+          setVinylSpin(false);
+          resetSkipCount();
+          playerNext();
+          releaseWakeLock();
+        };
+        audioEl.onerror = function() {
+          setPlayerStatus('Track unavailable');
+          guardedSkip('Stream error');
+        };
+        audioEl.src = API_BASE + '/api/youtube-audio/stream?v=' + videoId;
+        audioEl.volume = 0.85;
+        audioEl.play().then(function() {
+          playerIsPlaying = true;
+          resetSkipCount();
+          document.getElementById('playerPlayBtn').innerHTML = '⏸';
+          setVinylSpin(true);
+          startProgressUpdates();
+          requestWakeLock();
+          startSilentKeepAlive();
+          setPlayerStatus('');
+        }).catch(function() {
+          setPlayerStatus('Buffering...');
+          audioEl.addEventListener('canplay', function h() {
+            audioEl.removeEventListener('canplay', h);
+            audioEl.play().then(function() {
+              playerIsPlaying = true;
+              resetSkipCount();
+              document.getElementById('playerPlayBtn').innerHTML = '⏸';
+              setVinylSpin(true);
+              startProgressUpdates();
+              requestWakeLock();
+              startSilentKeepAlive();
+              setPlayerStatus('');
+            }).catch(function() { setPlayerStatus('Tap play to start'); });
+          });
+        });
       } else {
-        setPlayerStatus('Track not available — try another');
-        guardedSkip('No YouTube or Deezer source');
+        // No video ID — try Deezer 30s preview
+        deezerProm.then(function(dz) {
+          if (dz && dz.preview) {
+            playerMode = 'deezer';
+            setPlayerStatus('30s preview — full song unavailable');
+            playDeezerFallback(dz.preview);
+          } else {
+            setPlayerStatus('Track not available');
+            guardedSkip('No source found');
+          }
+        });
       }
+    }).catch(function() {
+      deezerProm.then(function(dz) {
+        if (dz && dz.preview) {
+          playerMode = 'deezer';
+          setPlayerStatus('30s preview');
+          playDeezerFallback(dz.preview);
+        } else {
+          setPlayerStatus('Track not available');
+          guardedSkip('Resolve failed');
+        }
+      });
+    });
+
+    // Album art (non-blocking)
+    deezerProm.then(function(dz) {
+      if (dz && dz.cover) {
+        document.getElementById('playerArt').innerHTML = '<img src="' + dz.cover + '" alt="Art" onerror="this.parentNode.innerHTML=\'<span class=vinyl-icon>🎵</span>\'">';
+      }
+      var searchQ = encodeURIComponent(q);
+      var links = '<a href="https://www.youtube.com/results?search_query=' + searchQ + '" target="_blank">YouTube ↗</a>';
+      links += '<a href="https://open.spotify.com/search/' + searchQ + '" target="_blank">Spotify ↗</a>';
+      if (dz && dz.deezerLink) links += '<a href="' + dz.deezerLink + '" target="_blank">Deezer ↗</a>';
+      document.getElementById('playerLinks').innerHTML = links;
+    });
 
     document.getElementById('playerSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
