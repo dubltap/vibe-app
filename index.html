@@ -1553,7 +1553,7 @@
           </div>
         </div>
         <div class="yt-hidden"><div id="ytPlayerIframe"></div></div>
-        <audio id="audioPreview" preload="auto"></audio>
+        <audio id="audioPreview" preload="auto" playsinline webkit-playsinline></audio>
       </div>
       
       <ul class="song-list" id="songList"></ul>
@@ -2185,6 +2185,10 @@
     stopPlayer();
     updatePlayerUI(song, index);
     setPlayerStatus('Finding track...');
+      // Claim audio element on user gesture BEFORE async work
+      audioEl = document.getElementById('audioPreview');
+      audioEl.src = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=';
+      audioEl.play().then(function() { audioEl.pause(); }).catch(function() {});
 
     const q = `${song.title} ${song.artist}`;
 
@@ -2210,7 +2214,7 @@
     if (dz && dz.deezerLink) links += `<a href="${dz.deezerLink}" target="_blank">Deezer ↗</a>`;
     document.getElementById('playerLinks').innerHTML = links;
 
-      // Play priority: Direct audio (lock screen safe) → YouTube iframe → Deezer preview
+      // Play priority: Direct audio (lock screen safe) → Deezer preview
       if (videoId) {
         setPlayerStatus('Loading full song...');
         playDirectAudio(videoId);
@@ -2229,11 +2233,6 @@
 
     function playDirectAudio(videoId) {
       audioEl = document.getElementById('audioPreview');
-      audioEl.oncanplay = null;
-      audioEl.onerror = null;
-      audioEl.onended = null;
-      audioEl.src = API_BASE + '/api/youtube-audio/stream?v=' + videoId;
-      audioEl.volume = 0.85;
       playerMode = 'direct';
       setPlayerStatus('Buffering...');
 
@@ -2244,17 +2243,20 @@
         playerNext();
         releaseWakeLock();
       };
-      audioEl.onerror = function() {
+      audioEl.onerror = function(e) {
+        console.error('Audio error:', e);
         setPlayerStatus('Retrying...');
         setTimeout(function() {
-          audioEl.src = API_BASE + '/api/youtube-audio/stream?v=' + videoId;
+          audioEl.src = API_BASE + '/api/youtube-audio/stream?v=' + videoId + '&t=' + Date.now();
           audioEl.play().catch(function() {
             setPlayerStatus('Track unavailable');
             guardedSkip('Direct audio failed');
           });
-        }, 1000);
+        }, 1500);
       };
 
+      audioEl.src = API_BASE + '/api/youtube-audio/stream?v=' + videoId;
+      audioEl.volume = 0.85;
       audioEl.play().then(function() {
         playerIsPlaying = true;
         resetSkipCount();
@@ -2262,8 +2264,10 @@
         setVinylSpin(true);
         startProgressUpdates();
         requestWakeLock();
+        startSilentKeepAlive();
         setPlayerStatus('');
       }).catch(function() {
+        setPlayerStatus('Buffering...');
         audioEl.addEventListener('canplay', function handler() {
           audioEl.removeEventListener('canplay', handler);
           audioEl.play().then(function() {
@@ -2273,6 +2277,7 @@
             setVinylSpin(true);
             startProgressUpdates();
             requestWakeLock();
+            startSilentKeepAlive();
             setPlayerStatus('');
           }).catch(function() {
             setPlayerStatus('Tap play to start');
