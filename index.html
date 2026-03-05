@@ -2201,47 +2201,13 @@
       : resolveDeezerTrack(song.artist, song.title).then(function(d) { if (d) deezerCache[q] = d; return d; });
 
     resolveVideoId(song.artist, song.title).then(function(videoId) {
-      if (videoId) {
-        setPlayerStatus('Buffering...');
-        audioEl.onended = function() {
-          playerIsPlaying = false;
-          setVinylSpin(false);
-          resetSkipCount();
-          playerNext();
-          releaseWakeLock();
-        };
-        audioEl.onerror = function() {
-          setPlayerStatus('Track unavailable');
-          guardedSkip('Stream error');
-        };
-        audioEl.src = API_BASE + '/api/youtube-audio/stream?v=' + videoId;
-        audioEl.volume = 0.85;
-        audioEl.play().then(function() {
-          playerIsPlaying = true;
-          resetSkipCount();
-          document.getElementById('playerPlayBtn').innerHTML = '⏸';
-          setVinylSpin(true);
-          startProgressUpdates();
-          requestWakeLock();
-          startSilentKeepAlive();
-          setPlayerStatus('');
-        }).catch(function() {
-          setPlayerStatus('Buffering...');
-          audioEl.addEventListener('canplay', function h() {
-            audioEl.removeEventListener('canplay', h);
-            audioEl.play().then(function() {
-              playerIsPlaying = true;
-              resetSkipCount();
-              document.getElementById('playerPlayBtn').innerHTML = '⏸';
-              setVinylSpin(true);
-              startProgressUpdates();
-              requestWakeLock();
-              startSilentKeepAlive();
-              setPlayerStatus('');
-            }).catch(function() { setPlayerStatus('Tap play to start'); });
-          });
-        });
-      } else {
+      // Play via YouTube (full song) or Deezer fallback (30s preview)
+      if (videoId && ytReady) {
+        playerMode = 'youtube';
+        setPlayerStatus('');
+        ytPlayer.loadVideoById(videoId);
+      } else if (dz && dz.preview) {
+
         // No video ID — try Deezer 30s preview
         deezerProm.then(function(dz) {
           if (dz && dz.preview) {
