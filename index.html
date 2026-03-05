@@ -1595,14 +1595,14 @@
 <!-- ═══ Email Capture Modal ═══ -->
 <div class="modal-overlay" id="emailModal">
   <div class="modal">
-    <button class="modal-close" onclick="closeEmailModal()">✕</button>
+    <!-- close button removed: email required -->
     <div class="modal-icon">🎧</div>
     <h2>Unlock VibeCurate</h2>
     <p>Enter your email to get 5 free AI-curated playlists per month, plus weekly music discovery.</p>
     <div class="modal-error" id="emailError">Please enter a valid email address.</div>
     <input type="email" class="modal-input" id="emailInput" placeholder="your@email.com" onkeypress="if(event.key==='Enter')submitEmail()">
     <button class="modal-submit" onclick="submitEmail()">Get Free Access</button>
-    <button class="modal-dismiss" onclick="closeEmailModal()">Maybe later</button>
+    <!-- dismiss button removed: email required -->
     <div class="modal-fine-print">By continuing, you agree to our <a href="https://dubltap.io/terms" target="_blank" rel="noopener" style="color: #2A9D8F;">Terms</a> & <a href="https://dubltap.io/privacy" target="_blank" rel="noopener" style="color: #2A9D8F;">Privacy Policy</a>.<br>No spam. Unsubscribe anytime.</div>
   </div>
 </div>
@@ -1813,7 +1813,7 @@
     if (!prompt || isGenerating) return;
     
     // Check email gate — must return to prevent generation behind modal
-    if (!isRegistered && playlistsCreated >= EMAIL_GATE_AFTER) {
+    if (!isRegistered) {
       showEmailModal();
       return;
     }
@@ -2931,7 +2931,7 @@
   }
   
   function closeEmailModal() {
-    document.getElementById('emailModal')?.classList.remove('active');
+    // Modal cannot be dismissed — email is required
   }
   
   async function submitEmail() {
@@ -2948,7 +2948,9 @@
     isRegistered = true;
     saveState();
     updateUI();
-    closeEmailModal();
+          document.getElementById('emailModal')?.classList.remove('active');
+                // Fire Reddit conversion pixel on email capture
+                      if (typeof rdt === 'function') rdt('track', 'Lead');
     
     // Send to backend
     try {
