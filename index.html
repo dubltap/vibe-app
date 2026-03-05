@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VibeCurate — AI-Powered Playlist Curation | dubltap.io</title>
   <meta name="description" content="Tell us the mood. We'll find the music. AI-powered playlist curation that understands your vibe. Free unlimited playlists.">
-  
+  hh
   <!-- Open Graph -->
   <meta property="og:title" content="VibeCuratehh |h AI-Powehhred Playlist Curation">
   <meta property="og:description" content="Tell us the mood. We'll find the music. Free unlimited AI-curated playlists.">
@@ -2229,25 +2229,14 @@
 
     function playDirectAudio(videoId) {
       audioEl = document.getElementById('audioPreview');
+      audioEl.oncanplay = null;
+      audioEl.onerror = null;
+      audioEl.onended = null;
       audioEl.src = API_BASE + '/api/youtube-audio/stream?v=' + videoId;
       audioEl.volume = 0.85;
       playerMode = 'direct';
-      audioEl.oncanplay = function() {
-        audioEl.play().then(() => {
-          playerIsPlaying = true;
-          resetSkipCount();
-          document.getElementById('playerPlayBtn').innerHTML = '⏸';
-          setVinylSpin(true);
-          startProgressUpdates();
-          requestWakeLock();
-          setPlayerStatus('');
-        }).catch(() => {
-          if (videoId && ytReady) {
-            playerMode = 'youtube';
-            ytPlayer.loadVideoById(videoId);
-          }
-        });
-      };
+      setPlayerStatus('Buffering...');
+
       audioEl.onended = function() {
         playerIsPlaying = false;
         setVinylSpin(false);
@@ -2256,16 +2245,40 @@
         releaseWakeLock();
       };
       audioEl.onerror = function() {
-        if (videoId && ytReady) {
-          setPlayerStatus('Switching to YouTube...');
-          playerMode = 'youtube';
-          ytPlayer.loadVideoById(videoId);
-        } else {
-          setPlayerStatus('Track unavailable');
-          guardedSkip('Direct audio failed');
-        }
+        setPlayerStatus('Retrying...');
+        setTimeout(function() {
+          audioEl.src = API_BASE + '/api/youtube-audio/stream?v=' + videoId;
+          audioEl.play().catch(function() {
+            setPlayerStatus('Track unavailable');
+            guardedSkip('Direct audio failed');
+          });
+        }, 1000);
       };
-      audioEl.load();
+
+      audioEl.play().then(function() {
+        playerIsPlaying = true;
+        resetSkipCount();
+        document.getElementById('playerPlayBtn').innerHTML = '⏸';
+        setVinylSpin(true);
+        startProgressUpdates();
+        requestWakeLock();
+        setPlayerStatus('');
+      }).catch(function() {
+        audioEl.addEventListener('canplay', function handler() {
+          audioEl.removeEventListener('canplay', handler);
+          audioEl.play().then(function() {
+            playerIsPlaying = true;
+            resetSkipCount();
+            document.getElementById('playerPlayBtn').innerHTML = '⏸';
+            setVinylSpin(true);
+            startProgressUpdates();
+            requestWakeLock();
+            setPlayerStatus('');
+          }).catch(function() {
+            setPlayerStatus('Tap play to start');
+          });
+        });
+      });
     }
 
     function playViaYouTube(videoId) {
