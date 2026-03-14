@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+h<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VibeCurate — AI-Powered Playlist Curation | dubltap.io</title>
-  <meta name="description" content="Tell us the mood. We'll find the music. AI-powered playlist curation that understands your vibe. Free unlimited playlists.">
+  <meta name="description" content="Tell us theh mood. We'll find the music. AI-powered playlist curation that understands your vibe. Free unlimited playlists.">
   
   <!-- Open Graph -->
   <meta property="og:title" content="VibeCuratehh |h AI-Powehhred Playlist Curation">
@@ -2033,13 +2033,7 @@
   // PLAYER — YouTube Full Songs + Deezer Album Art
   // ═══════════════════════════════════════════════════════════════
 
-  // Invidious instances for video ID resolution (CORS-enabled, tested 2026-03-02)
-    const INVIDIOUS_INSTANCES = [
-      'iv.melmac.space'
-    ];
-
-    // Piped instances — none currently have CORS; kept as fallback structure
-    const PIPED_INSTANCES = [];
+  // YouTube resolution now handled by Railway backend (api.dubltap.io)
 
   // YouTube IFrame API ready callback (global)
   window.onYouTubeIframeAPIReady = function() {
@@ -2448,61 +2442,29 @@
       }
     }
 
-  // ── Video ID Resolution via Invidious ──
+// ── Video ID Resolution via Railway Backend ──
   async function resolveVideoId(artist, title) {
-    const q = `${artist} ${title}`;
+    var q = artist + ' ' + title;
     if (videoIdCache[q]) return videoIdCache[q];
-
-    // Try Invidious instances first
-    const invFetchers = INVIDIOUS_INSTANCES.map(host => {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 6000);
-      return fetch(`https://${host}/api/v1/search?q=${encodeURIComponent(q)}&type=video`, {
-        signal: controller.signal
-      }).then(res => {
-        clearTimeout(timeout);
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        return res.json();
-      }).then(data => {
-        if (!Array.isArray(data) || data.length === 0) throw new Error('No results');
-        const best = data.find(v => v.videoId && v.lengthSeconds > 60 && v.lengthSeconds < 900)
-                  || data.find(v => v.videoId && v.lengthSeconds > 30)
-                  || data[0];
-        if (!best || !best.videoId) throw new Error('No videoId');
-        videoIdCache[q] = best.videoId;
-        return best.videoId;
-      });
-    });
-
+    var query = encodeURIComponent(q);
     try {
-      return await Promise.any(invFetchers);
-    } catch(e) {
-      // Fallback: try Piped API instances
-      const pipedFetchers = PIPED_INSTANCES.map(host => {
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 5000);
-        return fetch(`https://${host}/search?q=${encodeURIComponent(q)}&filter=music_songs`, {
-          signal: controller.signal
-        }).then(res => {
-          clearTimeout(timeout);
-          if (!res.ok) throw new Error('HTTP ' + res.status);
-          return res.json();
-        }).then(data => {
-          if (!data || !data.items || data.items.length === 0) throw new Error('No results');
-          const url = data.items[0].url;
-          if (!url) throw new Error('No URL');
-          const match = url.match(/[?&]v=([a-zA-Z0-9_-]{11})/);
-          if (!match) throw new Error('No videoId');
-          videoIdCache[q] = match[1];
-          return match[1];
-        });
+      var controller = new AbortController();
+      var timeout = setTimeout(function() { controller.abort(); }, 8000);
+      var res = await fetch('https://api.dubltap.io/api/yt-search?q=' + query, {
+        signal: controller.signal
       });
-
-      try {
-        return await Promise.any(pipedFetchers);
-      } catch(e2) {
-        return null;
+      clearTimeout(timeout);
+      if (!res.ok) return null;
+      var data = await res.json();
+      if (data && data.videoId) {
+        console.log('[VibeCurate] Resolved via Railway: ' + data.videoId + ' (' + data.source + ')');
+        videoIdCache[q] = data.videoId;
+        return data.videoId;
       }
+      return null;
+    } catch (e) {
+      console.warn('[VibeCurate] Railway resolver failed:', e.message);
+      return null;
     }
   }
 
